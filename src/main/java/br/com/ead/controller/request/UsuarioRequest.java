@@ -1,6 +1,5 @@
-package br.com.ead.controller.request.usuario;
+package br.com.ead.controller.request;
 
-import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +12,6 @@ public class UsuarioRequest {
     @NotBlank(message = "email obrigatório")
     private String email;
     @NotBlank(message = "senha obrigatória")
-    a
     private String senha;
     @NotNull(message = "Tipo de usuário obrigatório")
     @Schema(description = "Tipo de usuário", example = "ADMINISTRADOR", allowableValues = "ADMINISTRADOR, PROFESSOR, ALUNO")

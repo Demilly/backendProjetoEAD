@@ -1,7 +1,7 @@
 package br.com.ead.controller;
 
 
-import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.request.UsuarioRequest;
 import br.com.ead.controller.response.UsuarioResponse;
 import br.com.ead.service.UsuarioService;
 import br.com.ead.service.mapper.UsuarioMapper;

@@ -1,6 +1,6 @@
 package br.com.ead.service.mapper;
 
-import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.request.UsuarioRequest;
 import br.com.ead.controller.response.UsuarioResponse;
 import br.com.ead.model.entity.usuario.Usuario;
 import org.mapstruct.Mapper;
@@ -16,6 +16,7 @@ public interface UsuarioMapper {
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "cursos", ignore = true)
+    @Mapping(target = "telefones", ignore = true)
     Usuario toUsuario(UsuarioRequest usuarioRequest);
 
     UsuarioResponse toUsuarioResponse(Usuario usuario);

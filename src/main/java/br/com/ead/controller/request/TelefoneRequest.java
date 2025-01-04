@@ -1,4 +1,4 @@
-package br.com.ead.controller.request.usuario;
+package br.com.ead.controller.request;
 
 import lombok.Data;
 

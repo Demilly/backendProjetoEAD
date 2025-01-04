@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -39,9 +39,11 @@ public class Questao {
     private Integer pontuacao;
 
     @Column(name = "data_criacao")
+    @CreationTimestamp
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
+    @UpdateTimestamp
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore

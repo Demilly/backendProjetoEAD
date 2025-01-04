@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,9 +37,11 @@ public class Modulo {
     private Integer ordemModulo;
 
     @Column(name = "data_criacao")
+    @UpdateTimestamp
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
+    @CreationTimestamp
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,14 +49,14 @@ public class Modulo {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "instituicao_id", nullable = false)
-    private Instituicao instituicao;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "curso_id", nullable = false)
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Questao> questoes = new ArrayList<>();
+    public void addAulas(Aula aula) {
+        aula.setModulo(this);
+        this.aulas.add(aula);
+    }
+
+//    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Questao> questoes = new ArrayList<>();
 }

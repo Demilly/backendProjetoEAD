@@ -49,6 +49,10 @@ dependencies {
 	// MapStruct
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.6.3'
 	annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.6.3'
+
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.33'
+
 }
 
 tasks.named('test') {

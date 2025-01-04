@@ -1,6 +1,6 @@
 package br.com.ead.controller;
 
-import br.com.ead.controller.request.instituicao.InstituicaoRequest;
+import br.com.ead.controller.request.InstituicaoRequest;
 import br.com.ead.controller.response.InstituicaoResponse;
 import br.com.ead.service.InstituicaoService;
 import br.com.ead.service.mapper.InstituicaoMapper;

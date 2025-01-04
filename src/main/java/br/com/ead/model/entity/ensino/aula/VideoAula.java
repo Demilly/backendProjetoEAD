@@ -1,5 +1,6 @@
 package br.com.ead.model.entity.ensino.aula;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class VideoAula {
     @Column(name = "data_upload")
     private LocalDateTime dataUpload;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aula_id", nullable = false)
     private Aula aula;

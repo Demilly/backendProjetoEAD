@@ -1,5 +1,6 @@
 package br.com.ead.model.entity.ensino.aula;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class ProgressaoAula {
     private Long idProgressaoAula;
 
     @Column(name = "status_concluido", nullable = false)
-    private String statusConcluido;
+    private Boolean statusConcluido;
 
     @Column(name = "data_ultimo_acesso")
     private LocalDateTime dataUltimoAcesso;
@@ -31,6 +32,7 @@ public class ProgressaoAula {
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aula_id", nullable = false)
     private Aula aula;

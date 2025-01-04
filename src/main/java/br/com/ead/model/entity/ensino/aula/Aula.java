@@ -1,6 +1,7 @@
 package br.com.ead.model.entity.ensino.aula;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +34,9 @@ public class Aula {
     @Column(name = "ordem_aula")
     private Integer ordemAula;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "modulo_id", nullable = false)
+    @JoinColumn(name = "modulo_id")
     private Modulo modulo;
 
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,4 +47,9 @@ public class Aula {
 
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressaoAula> progressaoAulas = new ArrayList<>();
+
+    public void addVideos(VideoAula videoAula) {
+        videoAula.setAula(this);
+        this.videos.add(videoAula);
+    }
 }

@@ -1,4 +1,4 @@
-package br.com.ead.controller.request.instituicao;
+package br.com.ead.controller.request;
 
 import lombok.Data;
 
