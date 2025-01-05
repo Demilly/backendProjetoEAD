@@ -1,4 +1,4 @@
-package br.com.ead.service.mapper;
+package br.com.ead.model.mapper;
 
 import br.com.ead.controller.request.QuestaoRequest;
 import br.com.ead.model.entity.ensino.modulo.Questao;
@@ -12,5 +12,6 @@ public interface QuestaoMapper {
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "aula", ignore = true)
+    @Mapping(target = "comentarios", ignore = true)
     Questao toQuestao(QuestaoRequest questaoRequest);
 }

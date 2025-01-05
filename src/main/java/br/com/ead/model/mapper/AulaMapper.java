@@ -1,4 +1,4 @@
-package br.com.ead.service.mapper;
+package br.com.ead.model.mapper;
 
 import br.com.ead.controller.request.AulaRequest;
 import br.com.ead.model.entity.ensino.aula.Aula;

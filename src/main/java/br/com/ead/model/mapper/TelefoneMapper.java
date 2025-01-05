@@ -1,4 +1,4 @@
-package br.com.ead.service.mapper;
+package br.com.ead.model.mapper;
 
 import br.com.ead.controller.request.TelefoneRequest;
 import br.com.ead.controller.response.TelefoneResponse;

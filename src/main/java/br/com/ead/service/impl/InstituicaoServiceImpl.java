@@ -4,7 +4,7 @@ import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.repository.InstituicaoRepository;
 import br.com.ead.service.InstituicaoService;
-import br.com.ead.service.mapper.InstituicaoMapper;
+import br.com.ead.model.mapper.InstituicaoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

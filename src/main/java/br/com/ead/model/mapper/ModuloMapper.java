@@ -1,4 +1,4 @@
-package br.com.ead.service.mapper;
+package br.com.ead.model.mapper;
 
 import br.com.ead.controller.request.ModuloRequest;
 import br.com.ead.model.entity.ensino.modulo.Modulo;

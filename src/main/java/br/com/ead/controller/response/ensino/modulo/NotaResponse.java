@@ -6,4 +6,5 @@ import lombok.Data;
 public class NotaResponse {
 
     private Double valor;
+    private ModuloResponse modulo;
 }

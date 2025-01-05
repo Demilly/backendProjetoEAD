@@ -2,6 +2,7 @@ package br.com.ead.model.entity.ensino.modulo;
 
 
 import br.com.ead.model.entity.ensino.aula.Aula;
+import br.com.ead.model.entity.ensino.aula.Comentario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -49,6 +52,6 @@ public class Questao {
     @JoinColumn(name = "aula_id")
     private Aula aula;
 
-//    @OneToMany(mappedBy = "questao", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Comentario> comentarios = new HashSet<>();
+    @OneToMany(mappedBy = "questao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comentario> comentarios = new HashSet<>();
 }

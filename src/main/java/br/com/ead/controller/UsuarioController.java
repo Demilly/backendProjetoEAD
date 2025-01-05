@@ -45,7 +45,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "204", description = "Usuario deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuario não encontrado")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        usuarioService.deletarCurso(id);
+        usuarioService.deletarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 

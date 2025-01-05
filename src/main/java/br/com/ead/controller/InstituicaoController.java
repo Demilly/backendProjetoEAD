@@ -3,7 +3,7 @@ package br.com.ead.controller;
 import br.com.ead.controller.request.InstituicaoRequest;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.service.InstituicaoService;
-import br.com.ead.service.mapper.InstituicaoMapper;
+import br.com.ead.model.mapper.InstituicaoMapper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

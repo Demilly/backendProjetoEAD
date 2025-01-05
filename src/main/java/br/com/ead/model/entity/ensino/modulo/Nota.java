@@ -1,10 +1,13 @@
 package br.com.ead.model.entity.ensino.modulo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -19,12 +22,9 @@ public class Nota {
     private Long idNota;
 
     @Column(name = "valor")
-    private Double valor;
+    private BigDecimal valor;
 
-    @ManyToOne
-    @JoinColumn(name = "questao_id", nullable = false)
-    private Questao questao;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "modulo_id", nullable = false)
     private Modulo modulo;
