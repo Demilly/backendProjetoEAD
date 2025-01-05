@@ -1,11 +1,11 @@
 {
-  "start": " java -jar target/*.jar",
-  "install": "echo 'compiling' && mvn package",
+  "start": "java -jar build/libs/*.jar",
+  "install": "echo 'compiling' && ./gradlew build",
   "watch": {
     "throttle": 500,
     "install": {
       "include": [
-        "^pom\\.xml$",
+        "^build\\.gradle$",
         "\\.java$"
       ]
     }
