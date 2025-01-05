@@ -10,6 +10,7 @@ public interface AulaMapper {
 
     @Mapping(target = "videos", ignore = true)
     @Mapping(target = "modulo", ignore = true)
+    @Mapping(target = "questoes", ignore = true)
     @Mapping(target = "idAula", ignore = true)
     @Mapping(target = "comentarios", ignore = true)
     @Mapping(target = "progressaoAulas", ignore = true)

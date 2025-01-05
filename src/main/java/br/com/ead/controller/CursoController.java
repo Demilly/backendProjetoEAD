@@ -1,15 +1,13 @@
 package br.com.ead.controller;
 
 import br.com.ead.controller.request.CursoRequest;
-import br.com.ead.model.entity.ensino.Curso;
+import br.com.ead.controller.response.ensino.CursoResponse;
 import br.com.ead.service.CursoService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -18,9 +16,36 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+    @GetMapping("/{id}")
+    @ApiResponse(responseCode = "200", description = "Curso encontrado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Curso não encontrado")
+    public ResponseEntity<CursoResponse> buscarUsuarioPorId(@PathVariable Long id) {
+        var curso = cursoService.buscarCursoPorId(id);
+        return ResponseEntity.ok(curso);
+    }
+
     @PostMapping("/modulos")
-    public ResponseEntity<Curso> cadastrarCursoComModulos(@RequestBody CursoRequest cursoRequest) {
-        Curso novoCurso = cursoService.cadastrarCursoComModulos(cursoRequest);
+    public ResponseEntity<CursoResponse> cadastrarCursoComModulos(@RequestBody CursoRequest cursoRequest) {
+        CursoResponse novoCurso = cursoService.cadastrarCursoComModulos(cursoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCurso);
     }
+
+    @DeleteMapping("/{id}")
+    @ApiResponse(responseCode = "204", description = "Curso deletado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Curso não encontrado")
+    public ResponseEntity<Void> deletarCurso(@PathVariable Long id) {
+        cursoService.deletarCurso(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @ApiResponse(responseCode = "200", description = "Curso atualizado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Curso não encontrado")
+    public ResponseEntity<CursoResponse> atualizarCurso(
+            @PathVariable Long id,
+            @RequestBody CursoRequest cursoRequest) {
+        CursoResponse cursoAtualizado = cursoService.atualizarCurso(id, cursoRequest);
+        return ResponseEntity.ok(cursoAtualizado);
+    }
+
 }

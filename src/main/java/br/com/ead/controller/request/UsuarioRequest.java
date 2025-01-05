@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UsuarioRequest {
 
@@ -17,5 +19,5 @@ public class UsuarioRequest {
     @Schema(description = "Tipo de usuário", example = "ADMINISTRADOR", allowableValues = "ADMINISTRADOR, PROFESSOR, ALUNO")
     private TipoUsuarioEnum tipoUsuario;
     private InstituicaoRequest instituicao;
-//    private List<TelefoneRequest> telefones;
+    private List<TelefoneRequest> telefones;
 }

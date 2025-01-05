@@ -12,4 +12,5 @@ public class AulaRequest {
     private Integer duracaoMinutos;
     private Integer ordemAula;
     private List<VideoAulaRequest> videos;
+    private List<QuestaoRequest> questoes;
 }

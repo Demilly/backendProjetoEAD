@@ -1,23 +1,22 @@
 package br.com.ead.service.impl;
 
-import br.com.ead.controller.request.AulaRequest;
 import br.com.ead.controller.request.CursoRequest;
 import br.com.ead.controller.request.ModuloRequest;
+import br.com.ead.controller.request.QuestaoRequest;
 import br.com.ead.controller.request.VideoAulaRequest;
+import br.com.ead.controller.response.ensino.CursoResponse;
 import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.ensino.aula.Aula;
 import br.com.ead.model.entity.ensino.aula.VideoAula;
 import br.com.ead.model.entity.ensino.modulo.Modulo;
+import br.com.ead.model.entity.ensino.modulo.Questao;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.repository.CursoRepository;
 import br.com.ead.repository.InstituicaoRepository;
-import br.com.ead.repository.ModuloRepository;
 import br.com.ead.service.CursoService;
 import br.com.ead.service.exception.BusinessException;
-import br.com.ead.service.mapper.AulaMapper;
-import br.com.ead.service.mapper.CursoMapper;
-import br.com.ead.service.mapper.ModuloMapper;
-import br.com.ead.service.mapper.VideoAulaMapper;
+import br.com.ead.service.mapper.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,10 +31,11 @@ public class CursoServiceImpl implements CursoService {
     private final ModuloMapper moduloMapper;
     private final AulaMapper aulaMapper;
     private final VideoAulaMapper videoAulaMapper;
+    private final QuestaoMapper questaoMapper;
 
     @Transactional
     @Override
-    public Curso cadastrarCursoComModulos(CursoRequest cursoRequest) {
+    public CursoResponse cadastrarCursoComModulos(CursoRequest cursoRequest) {
         var cursoEntity = cursoMapper.toCurso(cursoRequest);
 
         Instituicao instituicao = buscarInstituicao(cursoRequest.getIdInstituicao());
@@ -47,7 +47,46 @@ public class CursoServiceImpl implements CursoService {
                 .forEach(cursoEntity::addModulos);
 
         cursoEntity.setIsAtivo(true);
-        return cursoRepository.save(cursoEntity);
+
+        var cursoSalvo = cursoRepository.save(cursoEntity);
+        return cursoMapper.toCursoResponse(cursoSalvo);
+    }
+
+    @Transactional
+    @Override
+    public CursoResponse buscarCursoPorId(Long id) {
+        var curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + id));
+        return cursoMapper.toCursoResponse(curso);
+    }
+
+    @Override
+    @Transactional
+    public void deletarCurso(Long id) {
+        Curso curso = cursoRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Curso não localizado para o ID informado."));
+        cursoRepository.delete(curso);
+    }
+
+    @Transactional
+    @Override
+    public CursoResponse atualizarCurso(Long id, CursoRequest cursoRequest) {
+        Curso cursoExistente = cursoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + id));
+
+        cursoMapper.updateCursoFromRequest(cursoRequest, cursoExistente);
+
+        Instituicao instituicao = buscarInstituicao(cursoRequest.getIdInstituicao());
+        associarInstituicaoAoCurso(cursoExistente, instituicao);
+
+        cursoExistente.getModulos().clear();
+        cursoRequest.getModulos()
+                .stream()
+                .map(moduloRequest -> criarModuloComAulas(moduloRequest, cursoExistente))
+                .forEach(cursoExistente::addModulos);
+
+        Curso cursoAtualizado = cursoRepository.save(cursoExistente);
+        return cursoMapper.toCursoResponse(cursoAtualizado);
     }
 
     private Instituicao buscarInstituicao(Long idInstituicao) {
@@ -64,19 +103,21 @@ public class CursoServiceImpl implements CursoService {
         Modulo modulo = moduloMapper.toModulo(moduloRequest);
         modulo.setCurso(cursoEntity);
 
-        moduloRequest.getAulas()
-                .forEach(aulaRequest -> criarAulaComVideos(aulaRequest, modulo));
+        moduloRequest.getAulas().forEach(aulaRequest -> {
+            Aula aula = aulaMapper.toAula(aulaRequest);
+            aula.setModulo(modulo);
+            aulaRequest.getVideos().forEach(videoAulaRequest -> adicionarVideoAula(videoAulaRequest, aula));
+            aulaRequest.getQuestoes().forEach(questaoRequest -> adicionarQuestoesAula(questaoRequest, aula));
+            modulo.addAulas(aula);
+        });
 
         return modulo;
     }
 
-    private void criarAulaComVideos(AulaRequest aulaRequest, Modulo modulo) {
-        Aula aula = aulaMapper.toAula(aulaRequest);
-        aula.setModulo(modulo);
-        modulo.addAulas(aula);
-
-        aulaRequest.getVideos()
-                .forEach(videoAulaRequest -> adicionarVideoAula(videoAulaRequest, aula));
+    private void adicionarQuestoesAula(QuestaoRequest questaoAulaRequest, Aula aula) {
+        Questao questao = questaoMapper.toQuestao(questaoAulaRequest);
+        questao.setAula(aula);
+        aula.addQuestoes(questao);
     }
 
     private void adicionarVideoAula(VideoAulaRequest videoAulaRequest, Aula aula) {

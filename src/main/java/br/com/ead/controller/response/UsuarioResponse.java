@@ -1,5 +1,6 @@
 package br.com.ead.controller.response;
 
+import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import lombok.Data;
 

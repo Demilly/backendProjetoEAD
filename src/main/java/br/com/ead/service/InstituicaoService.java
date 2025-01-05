@@ -1,6 +1,6 @@
 package br.com.ead.service;
 
-import br.com.ead.controller.response.InstituicaoResponse;
+import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 
 @FunctionalInterface

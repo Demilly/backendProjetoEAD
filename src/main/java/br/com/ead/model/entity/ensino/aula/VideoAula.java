@@ -34,6 +34,6 @@ public class VideoAula {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "aula_id", nullable = false)
+    @JoinColumn(name = "aula_id")
     private Aula aula;
 }

@@ -1,7 +1,7 @@
 package br.com.ead.service.mapper;
 
 import br.com.ead.controller.request.InstituicaoRequest;
-import br.com.ead.controller.response.InstituicaoResponse;
+import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

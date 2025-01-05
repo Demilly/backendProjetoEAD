@@ -13,5 +13,6 @@ public interface ModuloMapper {
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "curso", ignore = true)
+    @Mapping(target = "notas", ignore = true)
     Modulo toModulo(ModuloRequest moduloRequest);
 }

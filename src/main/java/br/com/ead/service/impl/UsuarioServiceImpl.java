@@ -1,6 +1,7 @@
 package br.com.ead.service.impl;
 
 
+import br.com.ead.controller.request.UsuarioRequest;
 import br.com.ead.controller.response.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Telefone;
@@ -11,6 +12,7 @@ import br.com.ead.repository.UsuarioRepository;
 import br.com.ead.service.UsuarioService;
 import br.com.ead.service.mapper.TelefoneMapper;
 import br.com.ead.service.mapper.UsuarioMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,17 +31,39 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponse salvarUsuario(Usuario usuario) {
-        Instituicao instituicao = determinaInstituicao(usuario);
-        usuario.setInstituicao(instituicao);
+    public UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest) {
 
-        List<Telefone> telefones = usuario.getTelefones();
-        telefones.forEach(usuario::addTelefone);
+        var usuarioEntity = usuarioMapper.toUsuario(usuarioRequest);
 
+        Instituicao instituicao = determinaInstituicao(usuarioEntity);
+        usuarioEntity.setInstituicao(instituicao);
 
-        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+        usuarioRequest.getTelefones()
+                .stream()
+                .map(telefoneMapper::toTelefone)
+                .forEach(usuarioEntity::addTelefone);
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
         telefoneRepository.saveAll(usuarioSalvo.getTelefones());
         return usuarioMapper.toUsuarioResponse(usuarioSalvo);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponse buscarUsuarioPorId(Long id) {
+        var usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
+
+        return usuarioMapper.toUsuarioResponse(usuario);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponse buscarUsuarioPorEmail(String email) {
+        var usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com EMAIL: " + email));
+
+        return usuarioMapper.toUsuarioResponse(usuario);
     }
 
     private Instituicao determinaInstituicao(Usuario usuario) {

@@ -47,6 +47,9 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Aula> aulas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Nota> notas = new ArrayList<>();
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "curso_id")
@@ -57,6 +60,8 @@ public class Modulo {
         this.aulas.add(aula);
     }
 
-//    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Questao> questoes = new ArrayList<>();
+    public void addNota(Nota nota) {
+        nota.setModulo(this);
+        this.notas.add(nota);
+    }
 }

@@ -24,4 +24,8 @@ public class Nota {
     @ManyToOne
     @JoinColumn(name = "questao_id", nullable = false)
     private Questao questao;
+
+    @ManyToOne
+    @JoinColumn(name = "modulo_id", nullable = false)
+    private Modulo modulo;
 }
