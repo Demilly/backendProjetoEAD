@@ -40,4 +40,13 @@ public class UsuarioController {
         var usuarioSalvo = usuarioService.salvarUsuario(usuarioRequest);
         return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    @ApiResponse(responseCode = "204", description = "Usuario deletado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Usuario não encontrado")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
+        usuarioService.deletarCurso(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

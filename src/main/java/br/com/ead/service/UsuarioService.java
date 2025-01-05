@@ -12,4 +12,6 @@ public interface UsuarioService {
 
     UsuarioResponse buscarUsuarioPorEmail(String email);
 
+    void deletarUsuario(Long id);
+
 }

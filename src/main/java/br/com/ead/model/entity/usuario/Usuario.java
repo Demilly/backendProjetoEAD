@@ -54,6 +54,7 @@ public class Usuario {
     @JoinColumn(name = "instituicao_id", nullable = false)
     private Instituicao instituicao;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "matricula",

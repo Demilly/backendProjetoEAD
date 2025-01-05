@@ -4,20 +4,18 @@ package br.com.ead.service.impl;
 import br.com.ead.controller.request.UsuarioRequest;
 import br.com.ead.controller.response.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
-import br.com.ead.model.entity.usuario.Telefone;
 import br.com.ead.model.entity.usuario.Usuario;
 import br.com.ead.repository.InstituicaoRepository;
 import br.com.ead.repository.TelefoneRepository;
 import br.com.ead.repository.UsuarioRepository;
 import br.com.ead.service.UsuarioService;
+import br.com.ead.service.exception.BusinessException;
 import br.com.ead.service.mapper.TelefoneMapper;
 import br.com.ead.service.mapper.UsuarioMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -64,6 +62,14 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com EMAIL: " + email));
 
         return usuarioMapper.toUsuarioResponse(usuario);
+    }
+
+    @Override
+    @Transactional
+    public void deletarUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Usuário não localizado para o ID informado."));
+        usuarioRepository.delete(usuario);
     }
 
     private Instituicao determinaInstituicao(Usuario usuario) {
