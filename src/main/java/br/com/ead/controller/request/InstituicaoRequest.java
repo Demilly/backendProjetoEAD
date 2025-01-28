@@ -7,4 +7,6 @@ public class InstituicaoRequest {
 
     private String nomeInstituicao;
     private String cpfOuCnpj;
+    private Integer quantidadeLicencasProfessor;
+    private Integer quantidadeLicencasAluno;
 }

@@ -11,4 +11,6 @@ public class InstituicaoResponse {
     private String cpfOuCnpj;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
+    private Integer quantidadeLicencasProfessor;
+    private Integer quantidadeLicencasAluno;
 }

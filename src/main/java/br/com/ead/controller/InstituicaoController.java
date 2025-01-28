@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -28,5 +25,12 @@ public class InstituicaoController {
         var instituicao = instituicaoMapper.toInstituicao(instituicaoRequest);
         var instituiocaoSalva = instituicaoService.salvarInstituicao(instituicao);
         return new ResponseEntity<>(instituiocaoSalva, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/atualizar/{id}")
+    @ApiResponse(responseCode = "200", description = "Instituicao atualizada com sucesso")
+    public ResponseEntity<InstituicaoResponse> atualizarInstituicao(@PathVariable Long id, @RequestBody @Valid InstituicaoRequest instituicaoRequest) {
+        var instituicaoAtualizada = instituicaoService.atualizarInstituicao(id, instituicaoRequest);
+        return ResponseEntity.ok(instituicaoAtualizada);
     }
 }

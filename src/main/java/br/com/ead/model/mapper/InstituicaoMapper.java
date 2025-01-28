@@ -5,6 +5,7 @@ import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface InstituicaoMapper {
@@ -17,4 +18,7 @@ public interface InstituicaoMapper {
     Instituicao toInstituicao(InstituicaoRequest instituicaoRequest);
 
     InstituicaoResponse toInstituicaoResponse(Instituicao instituicao);
+
+    @Mapping(target = "idInstituicao", ignore = true)
+    void updateInstituicaoFromRequest(InstituicaoRequest instituicaoRequest, @MappingTarget Instituicao instituicao);
 }

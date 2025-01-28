@@ -46,6 +46,12 @@ public class Instituicao {
     @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Curso> cursos = new ArrayList<>();
 
+    @Column(name = "quantidade_licencas_professor")
+    private Integer quantidadeLicencasProfessor;
+
+    @Column(name = "quantidade_licencas_aluno")
+    private Integer quantidadeLicencasAluno;
+
     public void addCurso(Curso curso) {
         cursos.add(curso);
         curso.setInstituicao(this);
