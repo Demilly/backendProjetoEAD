@@ -19,6 +19,9 @@ import br.com.ead.service.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -32,6 +35,15 @@ public class CursoServiceImpl implements CursoService {
     private final AulaMapper aulaMapper;
     private final VideoAulaMapper videoAulaMapper;
     private final QuestaoMapper questaoMapper;
+
+
+    @Transactional
+    @Override
+    public Page<CursoResponse> listarCursos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Curso> cursosPaginados = cursoRepository.findAll(pageable);
+        return cursosPaginados.map(cursoMapper::toCursoResponse);
+    }
 
     @Transactional
     @Override

@@ -3,7 +3,6 @@ package br.com.ead.service.impl;
 import br.com.ead.controller.request.MatriculaRequest;
 import br.com.ead.model.entity.ensino.Matricula;
 import br.com.ead.model.entity.usuario.Usuario;
-import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.repository.CursoRepository;
 import br.com.ead.repository.MatriculaRepository;
 import br.com.ead.repository.UsuarioRepository;
@@ -26,10 +25,6 @@ public class MatriculaServiceImpl implements MatriculaService {
     public Matricula efetuarMatricula(MatriculaRequest request) {
         Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado"));
-
-        if (!TipoUsuarioEnum.ALUNO.equals(usuario.getTipoUsuario())) {
-            throw new BusinessException("Somente usuários do tipo ALUNO podem se matricular.");
-        }
 
         var curso = cursoRepository.findById(request.getCursoId())
                 .orElseThrow(() -> new BusinessException("Curso não encontrado"));

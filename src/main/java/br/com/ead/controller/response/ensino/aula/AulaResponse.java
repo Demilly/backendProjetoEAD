@@ -13,5 +13,5 @@ public class AulaResponse {
     private Integer ordemAula;
     private List<VideoAulaResponse> videos;
     private List<ComentarioResponse> comentarios;
-    private List<ProgressaoAulaReponse> progressaoAulas;
+    private List<ProgressaoAulaResponse> progressaoAulas;
 }

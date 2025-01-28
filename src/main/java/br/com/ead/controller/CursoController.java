@@ -5,6 +5,7 @@ import br.com.ead.controller.response.ensino.CursoResponse;
 import br.com.ead.service.CursoService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,15 @@ import org.springframework.web.bind.annotation.*;
 public class CursoController {
 
     private final CursoService cursoService;
+
+    @GetMapping
+    @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
+    public ResponseEntity<Page<CursoResponse>> listarCursos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var cursosPaginados = cursoService.listarCursos(page, size);
+        return ResponseEntity.ok(cursosPaginados);
+    }
 
     @GetMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "Curso encontrado com sucesso")

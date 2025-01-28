@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/notas")
+@CrossOrigin("*")
 public class NotaController {
 
     private final NotaService notaService;
@@ -28,6 +31,16 @@ public class NotaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(notaResponse);
     }
 
-    // Outros endpoints podem ser adicionados aqui, como listar notas, buscar por ID, etc.
+    /**
+     * Endpoint retornar todas as notas por aluno.
+     *
+     * @param usuarioId Dados da nota a ser criada.
+     * @return A NotaResponse com os detalhes da nota criada.
+     */
+    @GetMapping("/aluno/{usuarioId}")
+    public ResponseEntity<List<NotaResponse>> listarNotasPorAluno(@PathVariable Long usuarioId) {
+        List<NotaResponse> notas = notaService.listarNotasPorAluno(usuarioId);
+        return ResponseEntity.ok(notas);
+    }
 }
 

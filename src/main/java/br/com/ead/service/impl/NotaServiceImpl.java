@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class NotaServiceImpl implements NotaService {
@@ -31,5 +33,13 @@ public class NotaServiceImpl implements NotaService {
 
         Nota notaSalva = notaRepository.save(nota);
         return notaMapper.toNotaResponse(notaSalva);
+    }
+
+    @Override
+    public List<NotaResponse> listarNotasPorAluno(Long usuarioId) {
+        List<Nota> notas = notaRepository.findNotasByUsuarioId(usuarioId);
+        return notas.stream()
+                .map(notaMapper::toNotaResponse)
+                .toList();
     }
 }
