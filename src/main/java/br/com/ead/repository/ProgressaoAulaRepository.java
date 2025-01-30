@@ -12,10 +12,11 @@ public interface ProgressaoAulaRepository extends JpaRepository<ProgressaoAula, 
     @Query("""
             SELECT p 
             FROM ProgressaoAula p 
-            JOIN p.aula a
-            JOIN a.modulo m
-            JOIN m.curso c
-            WHERE c.usuario.id = :usuarioId
+            JOIN FETCH p.aula a 
+            JOIN FETCH a.modulo m 
+            JOIN FETCH m.curso c 
+            JOIN FETCH c.matriculas mat 
+            WHERE mat.usuario.idUsuario = :usuarioId 
             """)
     List<ProgressaoAula> findProgressaoAulasByUsuarioId(@Param("usuarioId") Long usuarioId);
 }
