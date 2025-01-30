@@ -2,6 +2,7 @@ package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
+import br.com.ead.model.entity.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,9 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name = "instituicao_id")
     private Instituicao instituicao;
+
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Matricula> matriculas = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Modulo> modulos = new ArrayList<>();

@@ -8,13 +8,6 @@ import java.util.List;
 
 public interface NotaRepository extends JpaRepository<Nota, Long> {
 
-    @Query("""
-                SELECT n 
-                FROM Nota n 
-                JOIN n.modulo m 
-                JOIN m.curso c 
-                JOIN c.matriculas mat 
-                WHERE mat.usuario.id = :usuarioId
-            """)
+    @Query("SELECT n FROM Nota n JOIN FETCH n.modulo m JOIN FETCH m.curso c JOIN FETCH c.matriculas mat WHERE mat.usuario.idUsuario = :usuarioId")
     List<Nota> findNotasByUsuarioId(Long usuarioId);
 }

@@ -37,11 +37,11 @@ public class Modulo {
     private Integer ordemModulo;
 
     @Column(name = "data_criacao")
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime dataCriacao;
 
     @Column(name = "data_atualizacao")
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
