@@ -1,4 +1,4 @@
-package br.com.ead.config;
+package br.com.ead.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

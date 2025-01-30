@@ -1,10 +1,10 @@
 package br.com.ead.service.impl;
 
-import br.com.ead.controller.request.CursoRequest;
-import br.com.ead.controller.request.ModuloRequest;
+import br.com.ead.controller.request.ensino.curso.CursoRequest;
+import br.com.ead.controller.request.ensino.modulo.ModuloRequest;
 import br.com.ead.controller.request.QuestaoRequest;
 import br.com.ead.controller.request.VideoAulaRequest;
-import br.com.ead.controller.response.ensino.CursoResponse;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.ensino.aula.Aula;
 import br.com.ead.model.entity.ensino.aula.VideoAula;

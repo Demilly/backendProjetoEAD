@@ -1,4 +1,4 @@
-package br.com.ead.controller.response;
+package br.com.ead.controller.response.usuario;
 
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;

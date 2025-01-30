@@ -1,8 +1,8 @@
 package br.com.ead.service.impl;
 
 
-import br.com.ead.controller.request.UsuarioRequest;
-import br.com.ead.controller.response.UsuarioResponse;
+import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
 import br.com.ead.repository.InstituicaoRepository;

@@ -1,8 +1,8 @@
 package br.com.ead.service;
 
 
-import br.com.ead.controller.request.UsuarioRequest;
-import br.com.ead.controller.response.UsuarioResponse;
+import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.response.usuario.UsuarioResponse;
 
 public interface UsuarioService {
 

@@ -1,8 +1,8 @@
 package br.com.ead.controller;
 
 
-import br.com.ead.controller.request.UsuarioRequest;
-import br.com.ead.controller.response.UsuarioResponse;
+import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.service.UsuarioService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;

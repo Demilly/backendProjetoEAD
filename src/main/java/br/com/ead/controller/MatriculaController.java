@@ -1,7 +1,7 @@
 package br.com.ead.controller;
 
 
-import br.com.ead.controller.request.MatriculaRequest;
+import br.com.ead.controller.request.ensino.matricula.MatriculaRequest;
 import br.com.ead.model.entity.ensino.Matricula;
 import br.com.ead.service.MatriculaService;
 import lombok.AllArgsConstructor;
