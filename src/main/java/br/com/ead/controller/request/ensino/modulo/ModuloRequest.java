@@ -1,5 +1,6 @@
-package br.com.ead.controller.request;
+package br.com.ead.controller.request.ensino.modulo;
 
+import br.com.ead.controller.request.ensino.aula.AulaRequest;
 import lombok.Data;
 
 import java.util.List;

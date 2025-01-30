@@ -1,6 +1,7 @@
-package br.com.ead.controller.response;
+package br.com.ead.controller.response.ensino.matricula;
 
-import br.com.ead.controller.response.ensino.CursoResponse;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
+import br.com.ead.controller.response.usuario.UsuarioResponse;
 import lombok.Data;
 
 import java.time.LocalDateTime;

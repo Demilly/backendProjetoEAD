@@ -1,4 +1,4 @@
-package br.com.ead.controller.response.ensino;
+package br.com.ead.controller.response.ensino.curso;
 
 import br.com.ead.controller.response.ensino.modulo.ModuloResponse;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;

@@ -1,5 +1,6 @@
-package br.com.ead.controller.request;
+package br.com.ead.controller.request.usuario;
 
+import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

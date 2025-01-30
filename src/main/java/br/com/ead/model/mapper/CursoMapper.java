@@ -1,7 +1,7 @@
 package br.com.ead.model.mapper;
 
-import br.com.ead.controller.request.CursoRequest;
-import br.com.ead.controller.response.ensino.CursoResponse;
+import br.com.ead.controller.request.ensino.curso.CursoRequest;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.model.entity.ensino.Curso;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

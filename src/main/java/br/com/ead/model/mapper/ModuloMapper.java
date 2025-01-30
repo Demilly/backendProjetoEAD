@@ -1,6 +1,6 @@
 package br.com.ead.model.mapper;
 
-import br.com.ead.controller.request.ModuloRequest;
+import br.com.ead.controller.request.ensino.modulo.ModuloRequest;
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

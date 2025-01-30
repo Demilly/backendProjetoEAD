@@ -1,7 +1,7 @@
 package br.com.ead.controller;
 
-import br.com.ead.controller.request.CursoRequest;
-import br.com.ead.controller.response.ensino.CursoResponse;
+import br.com.ead.controller.request.ensino.curso.CursoRequest;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.service.CursoService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;

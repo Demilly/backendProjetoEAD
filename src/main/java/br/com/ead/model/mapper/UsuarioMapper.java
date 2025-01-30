@@ -1,7 +1,7 @@
 package br.com.ead.model.mapper;
 
-import br.com.ead.controller.request.UsuarioRequest;
-import br.com.ead.controller.response.UsuarioResponse;
+import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.usuario.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

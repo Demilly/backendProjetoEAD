@@ -1,7 +1,7 @@
 package br.com.ead.model.mapper;
 
-import br.com.ead.controller.request.TelefoneRequest;
-import br.com.ead.controller.response.TelefoneResponse;
+import br.com.ead.controller.request.usuario.TelefoneRequest;
+import br.com.ead.controller.response.usuario.TelefoneResponse;
 import br.com.ead.model.entity.usuario.Telefone;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

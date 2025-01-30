@@ -1,4 +1,4 @@
-package br.com.ead.controller.request;
+package br.com.ead.controller.request.ensino.matricula;
 
 import lombok.Data;
 
