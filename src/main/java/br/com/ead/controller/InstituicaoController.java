@@ -47,4 +47,10 @@ public class InstituicaoController {
         return ResponseEntity.ok(instituicaoAtualizada);
     }
 
+    @DeleteMapping("/{cpfOuCnpj}")
+    @ApiResponse(responseCode = "204", description = "Instituição excluída com sucesso")
+    public ResponseEntity<Void> deletarInstituicao(@PathVariable String cpfOuCnpj) {
+        instituicaoService.deletarInstituicao(cpfOuCnpj);
+        return ResponseEntity.noContent().build();
+    }
 }

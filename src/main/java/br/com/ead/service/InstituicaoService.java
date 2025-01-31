@@ -13,4 +13,6 @@ public interface InstituicaoService {
     InstituicaoResponse salvarInstituicao(Instituicao instituicao);
 
     InstituicaoResponse atualizarInstituicao(String cpfCnpj, InstituicaoRequest instituicaoRequest);
+
+    void deletarInstituicao(String cpfCnpj);
 }

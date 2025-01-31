@@ -6,6 +6,7 @@ import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.mapper.InstituicaoMapper;
 import br.com.ead.repository.InstituicaoRepository;
 import br.com.ead.service.InstituicaoService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,13 @@ public class InstituicaoServiceImpl implements InstituicaoService {
 
         var instituicaoAtualizada = instituicaoRepository.save(instituicaoExistente);
         return instituicaoMapper.toInstituicaoResponse(instituicaoAtualizada);
+    }
+
+    @Override
+    public void deletarInstituicao(String cpfCnpj) {
+        var instituicao = instituicaoRepository.findByCpfOuCnpj(cpfCnpj)
+                .orElseThrow(() -> new EntityNotFoundException("Instituição não encontrada"));
+
+        instituicaoRepository.delete(instituicao);
     }
 }
