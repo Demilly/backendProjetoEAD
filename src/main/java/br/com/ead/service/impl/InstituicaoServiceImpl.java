@@ -35,8 +35,8 @@ public class InstituicaoServiceImpl implements InstituicaoService {
     }
 
     @Override
-    public InstituicaoResponse atualizarInstituicao(Long id, InstituicaoRequest instituicaoRequest) {
-        var instituicaoExistente = instituicaoRepository.findById(id)
+    public InstituicaoResponse atualizarInstituicao(String cpfOuCnpj, InstituicaoRequest instituicaoRequest) {
+        var instituicaoExistente = instituicaoRepository.findByCpfOuCnpj(cpfOuCnpj)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Instituição não encontrada"));
 
         instituicaoMapper.updateInstituicaoFromRequest(instituicaoRequest, instituicaoExistente);

@@ -2,8 +2,8 @@ package br.com.ead.controller;
 
 import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
-import br.com.ead.service.InstituicaoService;
 import br.com.ead.model.mapper.InstituicaoMapper;
+import br.com.ead.service.InstituicaoService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -37,10 +37,14 @@ public class InstituicaoController {
         return new ResponseEntity<>(instituiocaoSalva, HttpStatus.CREATED);
     }
 
-    @PutMapping("/atualizar/{id}")
-    @ApiResponse(responseCode = "200", description = "Instituicao atualizada com sucesso")
-    public ResponseEntity<InstituicaoResponse> atualizarInstituicao(@PathVariable Long id, @RequestBody @Valid InstituicaoRequest instituicaoRequest) {
-        var instituicaoAtualizada = instituicaoService.atualizarInstituicao(id, instituicaoRequest);
+    @PutMapping("/atualizar/{cpfOuCnpj}")
+    @ApiResponse(responseCode = "200", description = "Instituição atualizada com sucesso")
+    public ResponseEntity<InstituicaoResponse> atualizarInstituicao(
+            @PathVariable String cpfOuCnpj,
+            @RequestBody @Valid InstituicaoRequest instituicaoRequest) {
+
+        var instituicaoAtualizada = instituicaoService.atualizarInstituicao(cpfOuCnpj, instituicaoRequest);
         return ResponseEntity.ok(instituicaoAtualizada);
     }
+
 }

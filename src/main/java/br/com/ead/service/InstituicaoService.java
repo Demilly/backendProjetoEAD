@@ -12,5 +12,5 @@ public interface InstituicaoService {
 
     InstituicaoResponse salvarInstituicao(Instituicao instituicao);
 
-    InstituicaoResponse atualizarInstituicao(Long id, InstituicaoRequest instituicaoRequest);
+    InstituicaoResponse atualizarInstituicao(String cpfCnpj, InstituicaoRequest instituicaoRequest);
 }

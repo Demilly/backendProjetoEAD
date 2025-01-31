@@ -7,6 +7,12 @@ public enum TipoUsuarioEnum {
     @Schema(description = "Administrador do sistema")
     ADMINISTRADOR,
 
+    @Schema(description = "DIRETOR ")
+    DIRETOR,
+
+    @Schema(description = "SUPORTE ")
+    SUPORTE,
+
     @Schema(description = "Professor")
     PROFESSOR,
 
