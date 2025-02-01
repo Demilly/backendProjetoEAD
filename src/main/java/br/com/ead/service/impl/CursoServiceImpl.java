@@ -24,6 +24,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class CursoServiceImpl implements CursoService {
@@ -36,10 +38,15 @@ public class CursoServiceImpl implements CursoService {
     private final VideoAulaMapper videoAulaMapper;
     private final QuestaoMapper questaoMapper;
 
+    @Override
+    public List<CursoResponse> listarCursos() {
+        var cursos = cursoRepository.findAll();
+        return cursos.stream().map(cursoMapper::toCursoResponse).toList();
+    }
 
     @Transactional
     @Override
-    public Page<CursoResponse> listarCursos(int page, int size) {
+    public Page<CursoResponse> listarCursosPaginada(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Curso> cursosPaginados = cursoRepository.findAll(pageable);
         return cursosPaginados.map(cursoMapper::toCursoResponse);

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/cursos")
@@ -17,12 +19,19 @@ public class CursoController {
 
     private final CursoService cursoService;
 
-    @GetMapping
+    @GetMapping("/paginada")
     @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
-    public ResponseEntity<Page<CursoResponse>> listarCursos(
+    public ResponseEntity<Page<CursoResponse>> listarCursosPaginada(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        var cursosPaginados = cursoService.listarCursos(page, size);
+        var cursosPaginados = cursoService.listarCursosPaginada(page, size);
+        return ResponseEntity.ok(cursosPaginados);
+    }
+
+    @GetMapping
+    @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
+    public ResponseEntity<List<CursoResponse>> listarCursos() {
+        var cursosPaginados = cursoService.listarCursos();
         return ResponseEntity.ok(cursosPaginados);
     }
 

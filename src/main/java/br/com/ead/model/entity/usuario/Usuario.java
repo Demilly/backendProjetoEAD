@@ -4,6 +4,7 @@ import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,12 +22,19 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "usuario")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long idUsuario;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "sobrenome")
+    private String sobrenome;
 
     @Column(name = "email")
     private String email;

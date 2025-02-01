@@ -2,6 +2,7 @@ package br.com.ead.model.entity.instituicao;
 
 import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "instituicao")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Instituicao {
 
     @Id

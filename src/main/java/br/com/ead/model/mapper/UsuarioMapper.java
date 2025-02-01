@@ -17,6 +17,7 @@ public interface UsuarioMapper {
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "cursos", ignore = true)
     @Mapping(target = "telefones", ignore = true)
+    @Mapping(target = "instituicao", ignore = true)
     Usuario toUsuario(UsuarioRequest usuarioRequest);
 
     UsuarioResponse toUsuarioResponse(Usuario usuario);

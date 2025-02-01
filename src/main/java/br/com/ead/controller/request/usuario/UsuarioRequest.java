@@ -1,6 +1,5 @@
 package br.com.ead.controller.request.usuario;
 
-import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +18,8 @@ public class UsuarioRequest {
     @NotNull(message = "Tipo de usuário obrigatório")
     @Schema(description = "Tipo de usuário", example = "ADMINISTRADOR", allowableValues = "ADMINISTRADOR, PROFESSOR, ALUNO")
     private TipoUsuarioEnum tipoUsuario;
-    private InstituicaoRequest instituicao;
+    private String instituicao;
     private List<TelefoneRequest> telefones;
+    private String nome;
+    private String sobrenome;
 }

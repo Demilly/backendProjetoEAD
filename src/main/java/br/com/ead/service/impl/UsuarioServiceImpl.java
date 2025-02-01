@@ -5,13 +5,13 @@ import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
+import br.com.ead.model.mapper.TelefoneMapper;
+import br.com.ead.model.mapper.UsuarioMapper;
 import br.com.ead.repository.InstituicaoRepository;
 import br.com.ead.repository.TelefoneRepository;
 import br.com.ead.repository.UsuarioRepository;
 import br.com.ead.service.UsuarioService;
 import br.com.ead.service.exception.BusinessException;
-import br.com.ead.model.mapper.TelefoneMapper;
-import br.com.ead.model.mapper.UsuarioMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -33,8 +33,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         var usuarioEntity = usuarioMapper.toUsuario(usuarioRequest);
 
-        Instituicao instituicao = determinaInstituicao(usuarioEntity);
-        usuarioEntity.setInstituicao(instituicao);
+        determinaInstituicao(usuarioRequest, usuarioEntity);
 
         usuarioRequest.getTelefones()
                 .stream()
@@ -72,13 +71,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
-    private Instituicao determinaInstituicao(Usuario usuario) {
-        if (usuario.getInstituicao() == null) {
+    private void determinaInstituicao(UsuarioRequest usuarioRequest, Usuario usuario) {
+        if (usuarioRequest.getInstituicao() == null || usuarioRequest.getInstituicao().isEmpty()) {
             usuario.setInstituicao(buscarInstituicaoPadrao());
         } else {
-            usuario.setInstituicao(buscarInstituicao(usuario));
+            usuario.setInstituicao(buscarInstituicao(usuarioRequest));
         }
-        return usuario.getInstituicao();
     }
 
     private Instituicao buscarInstituicaoPadrao() {
@@ -87,8 +85,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new IllegalStateException("Instituição padrão não encontrada."));
     }
 
-    private Instituicao buscarInstituicao(Usuario usuario) {
-        var usuarioInstituicao = usuario.getInstituicao().getCpfOuCnpj();
+    private Instituicao buscarInstituicao(UsuarioRequest usuarioRequest) {
+        var usuarioInstituicao = usuarioRequest.getInstituicao();
         return instituicaoRepository
                 .findByCpfOuCnpj(usuarioInstituicao)
                 .orElseThrow(() -> new IllegalStateException("Instituição Informada não encontrada."));

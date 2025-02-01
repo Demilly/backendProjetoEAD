@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class UsuarioResponse {
 
+    private String nome;
+    private String sobrenome;
     private String email;
     private TipoUsuarioEnum tipoUsuario;
     private List<TelefoneResponse> telefones;
