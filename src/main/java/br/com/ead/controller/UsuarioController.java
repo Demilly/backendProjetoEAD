@@ -3,10 +3,13 @@ package br.com.ead.controller;
 
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
+import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.service.UsuarioService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    @GetMapping(value = "/tipo/{tipoUsuarioEnum}")
+    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    public ResponseEntity<Page<UsuarioResponse>> buscarPorTipoUsuarioPaginado(
+            @PathVariable TipoUsuarioEnum tipoUsuarioEnum,
+            Pageable pageable) {
+        Page<UsuarioResponse> usuariosResponse = usuarioService.buscarPorTipoUsuarioPaginado(tipoUsuarioEnum, pageable);
+        return ResponseEntity.ok(usuariosResponse);
+    }
+
     @PostMapping("/salvar")
     @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
     public ResponseEntity<UsuarioResponse> salvarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
@@ -41,11 +54,11 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cpfOuCnpj}")
     @ApiResponse(responseCode = "204", description = "Usuario deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuario não encontrado")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        usuarioService.deletarUsuario(id);
+    public ResponseEntity<Void> deletarUsuario(@PathVariable String cpfOuCnpj) {
+        usuarioService.deletarUsuario(cpfOuCnpj);
         return ResponseEntity.noContent().build();
     }
 

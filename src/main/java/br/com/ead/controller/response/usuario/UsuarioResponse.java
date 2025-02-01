@@ -18,4 +18,6 @@ public class UsuarioResponse {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private InstituicaoResponse instituicao;
+    private Boolean statusUsuario;
+    private String cpfOuCnpj;
 }

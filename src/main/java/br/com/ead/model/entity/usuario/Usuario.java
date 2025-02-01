@@ -36,6 +36,9 @@ public class Usuario {
     @Column(name = "sobrenome")
     private String sobrenome;
 
+    @Column(name = "cpf_ou_cnpj")
+    private String cpfOuCnpj;
+
     @Column(name = "email")
     private String email;
 
@@ -70,6 +73,9 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "curso_id")
     )
     private List<Curso> cursos = new ArrayList<>();
+
+    @Column(name = "status")
+    private Boolean statusUsuario;
 
     public void addTelefone(Telefone telefone) {
         telefone.setUsuario(this);

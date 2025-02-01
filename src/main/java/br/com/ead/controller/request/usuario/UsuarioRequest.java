@@ -22,4 +22,7 @@ public class UsuarioRequest {
     private List<TelefoneRequest> telefones;
     private String nome;
     private String sobrenome;
+    private Boolean statusUsuario;
+    @NotBlank(message = "cpf ou cnpj obrigatório")
+    private String cpfOuCnpj;
 }

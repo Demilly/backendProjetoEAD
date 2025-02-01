@@ -5,6 +5,7 @@ import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
+import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.model.mapper.TelefoneMapper;
 import br.com.ead.model.mapper.UsuarioMapper;
 import br.com.ead.repository.InstituicaoRepository;
@@ -15,6 +16,8 @@ import br.com.ead.service.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -65,10 +68,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public void deletarUsuario(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+    public void deletarUsuario(String cpfOuCnpj) {
+        Usuario usuario = usuarioRepository.findByCpfOuCnpj(cpfOuCnpj)
                 .orElseThrow(() -> new BusinessException("Usuário não localizado para o ID informado."));
         usuarioRepository.delete(usuario);
+    }
+
+    @Override
+    public Page<UsuarioResponse> buscarPorTipoUsuarioPaginado(TipoUsuarioEnum tipoUsuarioEnum, Pageable pageable) {
+        Page<Usuario> usuarios = usuarioRepository.
+                findByTipoUsuario(tipoUsuarioEnum, pageable);
+        return usuarios.map(usuarioMapper::toUsuarioResponse);
     }
 
     private void determinaInstituicao(UsuarioRequest usuarioRequest, Usuario usuario) {
