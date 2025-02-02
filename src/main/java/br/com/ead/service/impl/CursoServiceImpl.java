@@ -60,11 +60,6 @@ public class CursoServiceImpl implements CursoService {
         Instituicao instituicao = buscarInstituicao(cursoRequest.getIdInstituicao());
         associarInstituicaoAoCurso(cursoEntity, instituicao);
 
-        cursoRequest.getModulos()
-                .stream()
-                .map(moduloRequest -> criarModuloComAulas(moduloRequest, cursoEntity))
-                .forEach(cursoEntity::addModulos);
-
         cursoEntity.setIsAtivo(true);
 
         var cursoSalvo = cursoRepository.save(cursoEntity);
@@ -99,10 +94,6 @@ public class CursoServiceImpl implements CursoService {
         associarInstituicaoAoCurso(cursoExistente, instituicao);
 
         cursoExistente.getModulos().clear();
-        cursoRequest.getModulos()
-                .stream()
-                .map(moduloRequest -> criarModuloComAulas(moduloRequest, cursoExistente))
-                .forEach(cursoExistente::addModulos);
 
         Curso cursoAtualizado = cursoRepository.save(cursoExistente);
         return cursoMapper.toCursoResponse(cursoAtualizado);

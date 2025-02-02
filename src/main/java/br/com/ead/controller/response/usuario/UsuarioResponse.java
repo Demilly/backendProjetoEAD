@@ -2,11 +2,15 @@ package br.com.ead.controller.response.usuario;
 
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class UsuarioResponse {
 
