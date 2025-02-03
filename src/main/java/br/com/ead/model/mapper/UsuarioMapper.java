@@ -5,6 +5,7 @@ import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.usuario.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {
         InstituicaoMapper.class,
@@ -21,4 +22,5 @@ public interface UsuarioMapper {
     Usuario toUsuario(UsuarioRequest usuarioRequest);
 
     UsuarioResponse toUsuarioResponse(Usuario usuario);
+
 }

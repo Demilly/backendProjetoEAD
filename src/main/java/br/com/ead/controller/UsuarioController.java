@@ -1,7 +1,10 @@
 package br.com.ead.controller;
 
 
+import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
+import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.service.UsuarioService;
@@ -52,6 +55,16 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> salvarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
         var usuarioSalvo = usuarioService.salvarUsuario(usuarioRequest);
         return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/atualizar/{cpfOuCnpj}")
+    @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
+    public ResponseEntity<UsuarioResponse> atualizarUsuario(
+            @PathVariable String cpfOuCnpj,
+            @RequestBody @Valid UsuarioUpdateRequest usuarioUpdateRequest) {
+
+        var instituicaoAtualizada = usuarioService.atualizarInstituicao(cpfOuCnpj, usuarioUpdateRequest);
+        return ResponseEntity.ok(instituicaoAtualizada);
     }
 
     @DeleteMapping("/{cpfOuCnpj}")

@@ -2,6 +2,7 @@ package br.com.ead.service.impl;
 
 
 import br.com.ead.controller.request.usuario.UsuarioRequest;
+import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
@@ -18,7 +19,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @AllArgsConstructor
 @Service
@@ -46,6 +49,23 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
         telefoneRepository.saveAll(usuarioSalvo.getTelefones());
         return usuarioMapper.toUsuarioResponse(usuarioSalvo);
+    }
+
+    @Override
+    public UsuarioResponse atualizarInstituicao(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest) {
+        var usuarioExistente = usuarioRepository.findByCpfOuCnpj(cpfCnpj)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        usuarioExistente.setEmail(usuarioUpdateRequest.getEmail());
+        usuarioExistente.setNome(usuarioUpdateRequest.getNome());
+        usuarioExistente.setSobrenome(usuarioUpdateRequest.getSobrenome());
+        usuarioExistente.setCpfOuCnpj(usuarioUpdateRequest.getCpfOuCnpj());
+        usuarioExistente.setStatusUsuario(usuarioUpdateRequest.getStatusUsuario());
+        usuarioExistente.setInstituicao(usuarioExistente.getInstituicao());
+        usuarioExistente.setSenha(usuarioExistente.getSenha());
+
+        var usuarioAtualizado = usuarioRepository.save(usuarioExistente);
+        return usuarioMapper.toUsuarioResponse(usuarioAtualizado);
     }
 
     @Override
