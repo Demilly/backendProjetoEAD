@@ -14,6 +14,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +27,9 @@ public class Modulo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_modulo")
     private Long idModulo;
+
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "titulo_modulo")
     private String tituloModulo;

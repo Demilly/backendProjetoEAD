@@ -111,15 +111,6 @@ public class CursoServiceImpl implements CursoService {
     private Modulo criarModuloComAulas(ModuloRequest moduloRequest, Curso cursoEntity) {
         Modulo modulo = moduloMapper.toModulo(moduloRequest);
         modulo.setCurso(cursoEntity);
-
-        moduloRequest.getAulas().forEach(aulaRequest -> {
-            Aula aula = aulaMapper.toAula(aulaRequest);
-            aula.setModulo(modulo);
-            aulaRequest.getVideos().forEach(videoAulaRequest -> adicionarVideoAula(videoAulaRequest, aula));
-            aulaRequest.getQuestoes().forEach(questaoRequest -> adicionarQuestoesAula(questaoRequest, aula));
-            modulo.addAulas(aula);
-        });
-
         return modulo;
     }
 
