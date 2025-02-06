@@ -12,11 +12,12 @@ public class CursoResponse {
 
     private String nome;
     private String descricao;
-    private Boolean isAtivo;
+    private Boolean ativo;
     private String urlBanner;
     private String cargaHoraria;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private InstituicaoResponse instituicao;
     private List<ModuloResponse> modulos;
+    private String uuid;
 }

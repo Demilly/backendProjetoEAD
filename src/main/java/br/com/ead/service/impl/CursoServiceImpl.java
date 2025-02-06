@@ -1,6 +1,7 @@
 package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.ensino.curso.CursoRequest;
+import br.com.ead.controller.request.ensino.curso.UpdateRequest;
 import br.com.ead.controller.request.ensino.modulo.ModuloRequest;
 import br.com.ead.controller.request.QuestaoRequest;
 import br.com.ead.controller.request.VideoAulaRequest;
@@ -54,18 +55,12 @@ public class CursoServiceImpl implements CursoService {
 
     @Transactional
     @Override
-    public CursoResponse cadastrarCursoComModulos(CursoRequest cursoRequest) {
+    public CursoResponse cadastrarCurso(CursoRequest cursoRequest) {
         var cursoEntity = cursoMapper.toCurso(cursoRequest);
 
-        Instituicao instituicao = buscarInstituicao(cursoRequest.getIdInstituicao());
+        Instituicao instituicao = buscarInstituicao(cursoRequest.getInstituicao());
         associarInstituicaoAoCurso(cursoEntity, instituicao);
-
-        cursoRequest.getModulos()
-                .stream()
-                .map(moduloRequest -> criarModuloComAulas(moduloRequest, cursoEntity))
-                .forEach(cursoEntity::addModulos);
-
-        cursoEntity.setIsAtivo(true);
+        cursoEntity.setAtivo(cursoRequest.getAtivo());
 
         var cursoSalvo = cursoRepository.save(cursoEntity);
         return cursoMapper.toCursoResponse(cursoSalvo);
@@ -81,36 +76,31 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     @Transactional
-    public void deletarCurso(Long id) {
-        Curso curso = cursoRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Curso não localizado para o ID informado."));
+    public void deletarCurso(String uuid) {
+        Curso curso = cursoRepository.findByUuid(uuid)
+                .orElseThrow(() -> new BusinessException("Curso não localizado para o ID informado.", uuid));
         cursoRepository.delete(curso);
     }
 
     @Transactional
     @Override
-    public CursoResponse atualizarCurso(Long id, CursoRequest cursoRequest) {
-        Curso cursoExistente = cursoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + id));
+    public CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest) {
+        Curso cursoExistente = cursoRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + uuid));
 
-        cursoMapper.updateCursoFromRequest(cursoRequest, cursoExistente);
-
-        Instituicao instituicao = buscarInstituicao(cursoRequest.getIdInstituicao());
-        associarInstituicaoAoCurso(cursoExistente, instituicao);
-
-        cursoExistente.getModulos().clear();
-        cursoRequest.getModulos()
-                .stream()
-                .map(moduloRequest -> criarModuloComAulas(moduloRequest, cursoExistente))
-                .forEach(cursoExistente::addModulos);
+        cursoExistente.setNome(updateRequest.getNome());
+        cursoExistente.setDescricao(updateRequest.getDescricao());
+        cursoExistente.setAtivo(updateRequest.getAtivo());
+        cursoExistente.setUrlBanner(updateRequest.getUrlBanner());
+        cursoExistente.setCargaHoraria(updateRequest.getCargaHoraria());
 
         Curso cursoAtualizado = cursoRepository.save(cursoExistente);
         return cursoMapper.toCursoResponse(cursoAtualizado);
     }
 
-    private Instituicao buscarInstituicao(Long idInstituicao) {
-        return instituicaoRepository.findById(idInstituicao)
-                .orElseThrow(() -> new BusinessException("Instituição não localizada para o código informado."));
+    private Instituicao buscarInstituicao(String cpfOuCnpj) {
+        return instituicaoRepository.findByCpfOuCnpj(cpfOuCnpj)
+                .orElseThrow(() -> new BusinessException("Instituição não localizada para o código informado.", cpfOuCnpj));
     }
 
     private void associarInstituicaoAoCurso(Curso curso, Instituicao instituicao) {

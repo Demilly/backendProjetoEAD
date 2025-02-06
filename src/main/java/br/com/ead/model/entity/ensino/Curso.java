@@ -2,7 +2,6 @@ package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
-import br.com.ead.model.entity.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +27,9 @@ public class Curso {
     @Column(name = "id_curso")
     private Long idCurso;
 
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
+
     @Column(name = "nome", nullable = false)
     private String nome;
 
@@ -34,7 +37,7 @@ public class Curso {
     private String descricao;
 
     @Column(name = "ativo")
-    private Boolean isAtivo;
+    private Boolean ativo;
 
     @Column(name = "url_banner")
     private String urlBanner;
