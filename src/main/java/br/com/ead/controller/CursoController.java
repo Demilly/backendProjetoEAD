@@ -4,13 +4,19 @@ import br.com.ead.controller.request.ensino.curso.CursoRequest;
 import br.com.ead.controller.request.ensino.curso.UpdateRequest;
 import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.service.CursoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,11 +51,19 @@ public class CursoController {
         return ResponseEntity.ok(curso);
     }
 
-    @PostMapping("/salvar")
-    public ResponseEntity<CursoResponse> cadastrarCursoComModulos(@RequestBody @Valid CursoRequest cursoRequest) {
-        CursoResponse novoCurso = cursoService.cadastrarCurso(cursoRequest);
+    @Operation(
+            summary = "Cadastrar Curso",
+            description = "Método para cadastrar um novo curso com uma imagem opcional."
+    )
+    @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<CursoResponse> cadastrarCurso(
+            @RequestPart(value = "cursoRequest") @Valid CursoRequest cursoRequest,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
+
+        CursoResponse novoCurso = cursoService.cadastrarCurso(cursoRequest, imagem);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCurso);
     }
+
 
     @DeleteMapping("/{uuid}")
     @ApiResponse(responseCode = "204", description = "Curso deletado com sucesso")

@@ -2,19 +2,13 @@ package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.ensino.curso.CursoRequest;
 import br.com.ead.controller.request.ensino.curso.UpdateRequest;
-import br.com.ead.controller.request.ensino.modulo.ModuloRequest;
-import br.com.ead.controller.request.QuestaoRequest;
-import br.com.ead.controller.request.VideoAulaRequest;
 import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.model.entity.ensino.Curso;
-import br.com.ead.model.entity.ensino.aula.Aula;
-import br.com.ead.model.entity.ensino.aula.VideoAula;
-import br.com.ead.model.entity.ensino.modulo.Modulo;
-import br.com.ead.model.entity.ensino.modulo.Questao;
 import br.com.ead.model.entity.instituicao.Instituicao;
-import br.com.ead.model.mapper.*;
+import br.com.ead.model.mapper.CursoMapper;
 import br.com.ead.repository.CursoRepository;
 import br.com.ead.repository.InstituicaoRepository;
+import br.com.ead.service.ArmazenamentoS3Service;
 import br.com.ead.service.CursoService;
 import br.com.ead.service.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,8 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
 
 @AllArgsConstructor
 @Service
@@ -34,10 +30,7 @@ public class CursoServiceImpl implements CursoService {
     private final InstituicaoRepository instituicaoRepository;
     private final CursoRepository cursoRepository;
     private final CursoMapper cursoMapper;
-    private final ModuloMapper moduloMapper;
-    private final AulaMapper aulaMapper;
-    private final VideoAulaMapper videoAulaMapper;
-    private final QuestaoMapper questaoMapper;
+    private  ArmazenamentoS3Service armazenamentoS3Service;
 
     @Override
     public List<CursoResponse> listarCursos() {
@@ -55,15 +48,26 @@ public class CursoServiceImpl implements CursoService {
 
     @Transactional
     @Override
-    public CursoResponse cadastrarCurso(CursoRequest cursoRequest) {
+    public CursoResponse cadastrarCurso(CursoRequest cursoRequest, MultipartFile imagem) {
         var cursoEntity = cursoMapper.toCurso(cursoRequest);
+
+        uploadS3(imagem, cursoEntity);
 
         Instituicao instituicao = buscarInstituicao(cursoRequest.getInstituicao());
         associarInstituicaoAoCurso(cursoEntity, instituicao);
+
         cursoEntity.setAtivo(cursoRequest.getAtivo());
 
         var cursoSalvo = cursoRepository.save(cursoEntity);
         return cursoMapper.toCursoResponse(cursoSalvo);
+    }
+
+    private void uploadS3(MultipartFile imagem, Curso cursoEntity) {
+        var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "curso");
+
+        if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
+            cursoEntity.setUrlBanner(responseS3.getCaminhoArquivo());
+        }
     }
 
     @Transactional
@@ -79,7 +83,15 @@ public class CursoServiceImpl implements CursoService {
     public void deletarCurso(String uuid) {
         Curso curso = cursoRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException("Curso não localizado para o ID informado.", uuid));
+
+        String imagemUrl = curso.getUrlBanner();
+
         cursoRepository.delete(curso);
+
+        // Deleta a imagem do S3, se tiver uma URL válida
+        if (imagemUrl != null && !imagemUrl.isBlank()) {
+            armazenamentoS3Service.deletarArquivo(imagemUrl, "curso");
+        }
     }
 
     @Transactional
@@ -106,23 +118,5 @@ public class CursoServiceImpl implements CursoService {
     private void associarInstituicaoAoCurso(Curso curso, Instituicao instituicao) {
         curso.setInstituicao(instituicao);
         instituicao.addCurso(curso);
-    }
-
-    private Modulo criarModuloComAulas(ModuloRequest moduloRequest, Curso cursoEntity) {
-        Modulo modulo = moduloMapper.toModulo(moduloRequest);
-        modulo.setCurso(cursoEntity);
-        return modulo;
-    }
-
-    private void adicionarQuestoesAula(QuestaoRequest questaoAulaRequest, Aula aula) {
-        Questao questao = questaoMapper.toQuestao(questaoAulaRequest);
-        questao.setAula(aula);
-        aula.addQuestoes(questao);
-    }
-
-    private void adicionarVideoAula(VideoAulaRequest videoAulaRequest, Aula aula) {
-        VideoAula videoAula = videoAulaMapper.toVideoAula(videoAulaRequest);
-        videoAula.setAula(aula);
-        aula.addVideos(videoAula);
     }
 }

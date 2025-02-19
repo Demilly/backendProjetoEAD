@@ -2,6 +2,7 @@ package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
+import br.com.ead.model.entity.s3.ArquivoReferencia;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class Curso {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "descricao")
+    @Column(name = "descricao", columnDefinition = "TEXT")
     private String descricao;
 
     @Column(name = "ativo")
