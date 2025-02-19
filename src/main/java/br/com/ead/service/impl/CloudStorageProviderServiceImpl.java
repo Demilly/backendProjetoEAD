@@ -1,6 +1,9 @@
-package br.com.ead.service;
+package br.com.ead.service.impl;
 
 import br.com.ead.controller.response.UploadResponse;
+import br.com.ead.config.aws.ArmazenamentoProperties;
+import br.com.ead.service.CloudStorageProviderService;
+import br.com.ead.service.ImageService;
 import br.com.ead.service.exception.FileUploadException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,5 @@
 package br.com.ead.config.aws;
 
-import br.com.ead.service.ArmazenamentoProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;

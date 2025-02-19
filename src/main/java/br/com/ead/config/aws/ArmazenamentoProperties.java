@@ -1,4 +1,4 @@
-package br.com.ead.service;
+package br.com.ead.config.aws;
 
 
 import lombok.Data;
