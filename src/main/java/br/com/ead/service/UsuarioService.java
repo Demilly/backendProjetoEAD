@@ -8,10 +8,13 @@ import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UsuarioService {
 
     UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest);
+
+    UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest, MultipartFile imagem);
 
     UsuarioResponse atualizarInstituicao(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest);
 

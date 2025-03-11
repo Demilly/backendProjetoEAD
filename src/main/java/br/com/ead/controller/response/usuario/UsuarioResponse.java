@@ -20,4 +20,5 @@ public class UsuarioResponse {
     private InstituicaoResponse instituicao;
     private Boolean statusUsuario;
     private String cpfOuCnpj;
+    private String urlImagem;
 }

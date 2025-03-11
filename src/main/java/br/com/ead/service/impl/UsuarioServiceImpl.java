@@ -4,6 +4,7 @@ package br.com.ead.service.impl;
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
+import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
 import br.com.ead.model.enums.TipoUsuarioEnum;
@@ -12,6 +13,7 @@ import br.com.ead.model.mapper.UsuarioMapper;
 import br.com.ead.repository.InstituicaoRepository;
 import br.com.ead.repository.TelefoneRepository;
 import br.com.ead.repository.UsuarioRepository;
+import br.com.ead.service.ArmazenamentoS3Service;
 import br.com.ead.service.UsuarioService;
 import br.com.ead.service.exception.BusinessException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @AllArgsConstructor
@@ -32,6 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final TelefoneMapper telefoneMapper;
     private final TelefoneRepository telefoneRepository;
     private final UsuarioMapper usuarioMapper;
+    private ArmazenamentoS3Service armazenamentoS3Service;
 
     @Override
     @Transactional
@@ -49,6 +53,32 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
         telefoneRepository.saveAll(usuarioSalvo.getTelefones());
         return usuarioMapper.toUsuarioResponse(usuarioSalvo);
+    }
+
+    @Override
+    public UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest, MultipartFile imagem) {
+        var usuarioEntity = usuarioMapper.toUsuario(usuarioRequest);
+
+        determinaInstituicao(usuarioRequest, usuarioEntity);
+
+//        usuarioRequest.getTelefones()
+//                .stream()
+//                .map(telefoneMapper::toTelefone)
+//                .forEach(usuarioEntity::addTelefone);
+
+        uploadS3(imagem, usuarioEntity);
+
+        Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
+        telefoneRepository.saveAll(usuarioSalvo.getTelefones());
+        return usuarioMapper.toUsuarioResponse(usuarioSalvo);
+    }
+
+    private void uploadS3(MultipartFile imagem, Usuario usuarioEntity) {
+        var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "usuario/"+usuarioEntity.getTipoUsuario().name());
+
+        if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
+            usuarioEntity.setUrlImagem(responseS3.getCaminhoArquivo());
+        }
     }
 
     @Override

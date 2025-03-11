@@ -1,21 +1,26 @@
 package br.com.ead.controller;
 
 
+import br.com.ead.controller.request.ensino.curso.CursoRequest;
 import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @RestController
@@ -50,11 +55,24 @@ public class UsuarioController {
         return ResponseEntity.ok(usuariosResponse);
     }
 
-    @PostMapping("/salvar")
-    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
-    public ResponseEntity<UsuarioResponse> salvarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
-        var usuarioSalvo = usuarioService.salvarUsuario(usuarioRequest);
-        return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+//    @PostMapping("/salvar")
+//    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
+//    public ResponseEntity<UsuarioResponse> salvarUsuario(@RequestBody @Valid UsuarioRequest usuarioRequest) {
+//        var usuarioSalvo = usuarioService.salvarUsuario(usuarioRequest);
+//        return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+//    }
+
+    @Operation(
+            summary = "Cadastrar Usuário",
+            description = "Método para cadastrar um novo usuário com uma imagem opcional."
+    )
+    @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<UsuarioResponse> cadastrarUsuario(
+            @RequestPart(value = "usuarioRequest") @Valid UsuarioRequest usuarioRequest,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
+
+        UsuarioResponse novoUsuario = usuarioService.salvarUsuario(usuarioRequest, imagem);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
     @PutMapping("/atualizar/{cpfOuCnpj}")

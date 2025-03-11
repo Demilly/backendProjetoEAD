@@ -65,6 +65,9 @@ public class Usuario {
     @JoinColumn(name = "instituicao_id", nullable = false)
     private Instituicao instituicao;
 
+    @Column(name = "url_imagem")
+    private String urlImagem;
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
