@@ -66,7 +66,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 //                .map(telefoneMapper::toTelefone)
 //                .forEach(usuarioEntity::addTelefone);
 
-        uploadS3(imagem, usuarioEntity);
+        if (imagem != null && !imagem.isEmpty()) {
+            uploadS3(imagem, usuarioEntity);
+        }
 
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
         telefoneRepository.saveAll(usuarioSalvo.getTelefones());
@@ -82,7 +84,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponse atualizarInstituicao(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest) {
+    public UsuarioResponse atualizarUsuario(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest, MultipartFile imagem) {
         var usuarioExistente = usuarioRepository.findByCpfOuCnpj(cpfCnpj)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
@@ -93,6 +95,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioExistente.setStatusUsuario(usuarioUpdateRequest.getStatusUsuario());
         usuarioExistente.setInstituicao(usuarioExistente.getInstituicao());
         usuarioExistente.setSenha(usuarioExistente.getSenha());
+
+        if (imagem != null && !imagem.isEmpty()) {
+            uploadS3(imagem, usuarioExistente);
+        }
+
 
         var usuarioAtualizado = usuarioRepository.save(usuarioExistente);
         return usuarioMapper.toUsuarioResponse(usuarioAtualizado);

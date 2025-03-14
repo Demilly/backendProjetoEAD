@@ -16,7 +16,7 @@ public interface UsuarioService {
 
     UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest, MultipartFile imagem);
 
-    UsuarioResponse atualizarInstituicao(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest);
+    UsuarioResponse atualizarUsuario(String cpfCnpj, UsuarioUpdateRequest usuarioUpdateRequest, MultipartFile imagem);
 
     UsuarioResponse buscarUsuarioPorId(Long id);
 

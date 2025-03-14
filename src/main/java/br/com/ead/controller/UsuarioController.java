@@ -75,14 +75,19 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
-    @PutMapping("/atualizar/{cpfOuCnpj}")
+    @Operation(
+            summary = "Cadastrar Usuário",
+            description = "Método para cadastrar um novo usuário com uma imagem opcional."
+    )
+    @PutMapping(value = "/atualizar/{cpfOuCnpj}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
     public ResponseEntity<UsuarioResponse> atualizarUsuario(
             @PathVariable String cpfOuCnpj,
-            @RequestBody @Valid UsuarioUpdateRequest usuarioUpdateRequest) {
+            @RequestPart(value = "usuarioRequest") @Valid UsuarioUpdateRequest usuarioUpdateRequest,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
 
-        var instituicaoAtualizada = usuarioService.atualizarInstituicao(cpfOuCnpj, usuarioUpdateRequest);
-        return ResponseEntity.ok(instituicaoAtualizada);
+        var usuarioAtualizada = usuarioService.atualizarUsuario(cpfOuCnpj, usuarioUpdateRequest, imagem);
+        return ResponseEntity.ok(usuarioAtualizada);
     }
 
     @DeleteMapping("/{cpfOuCnpj}")
