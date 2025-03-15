@@ -51,7 +51,9 @@ public class CursoServiceImpl implements CursoService {
     public CursoResponse cadastrarCurso(CursoRequest cursoRequest, MultipartFile imagem) {
         var cursoEntity = cursoMapper.toCurso(cursoRequest);
 
-        uploadS3(imagem, cursoEntity);
+        if (imagem != null && !imagem.isEmpty()) {
+            uploadS3(imagem, cursoEntity);
+        }
 
         Instituicao instituicao = buscarInstituicao(cursoRequest.getInstituicao());
         associarInstituicaoAoCurso(cursoEntity, instituicao);
@@ -63,6 +65,12 @@ public class CursoServiceImpl implements CursoService {
     }
 
     private void uploadS3(MultipartFile imagem, Curso cursoEntity) {
+
+        // Deleta a imagem do S3, se tiver uma URL válida
+        if (cursoEntity.getUrlBanner() != null && !cursoEntity.getUrlBanner().isBlank() && !cursoEntity.getUrlBanner().isEmpty()) {
+            armazenamentoS3Service.deletarArquivo(cursoEntity.getUrlBanner(), "curso");
+        }
+
         var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "curso");
 
         if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
@@ -96,7 +104,7 @@ public class CursoServiceImpl implements CursoService {
 
     @Transactional
     @Override
-    public CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest) {
+    public CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest, MultipartFile imagem) {
         Curso cursoExistente = cursoRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + uuid));
 
@@ -105,6 +113,10 @@ public class CursoServiceImpl implements CursoService {
         cursoExistente.setAtivo(updateRequest.getAtivo());
         cursoExistente.setUrlBanner(updateRequest.getUrlBanner());
         cursoExistente.setCargaHoraria(updateRequest.getCargaHoraria());
+
+        if (imagem != null && !imagem.isEmpty()) {
+            uploadS3(imagem, cursoExistente);
+        }
 
         Curso cursoAtualizado = cursoRepository.save(cursoExistente);
         return cursoMapper.toCursoResponse(cursoAtualizado);

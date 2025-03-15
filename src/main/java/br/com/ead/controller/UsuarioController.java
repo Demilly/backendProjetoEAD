@@ -83,7 +83,7 @@ public class UsuarioController {
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
     public ResponseEntity<UsuarioResponse> atualizarUsuario(
             @PathVariable String cpfOuCnpj,
-            @RequestPart(value = "usuarioRequest") @Valid UsuarioUpdateRequest usuarioUpdateRequest,
+            @RequestPart(value = "updateRequest") @Valid UsuarioUpdateRequest usuarioUpdateRequest,
             @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
 
         var usuarioAtualizada = usuarioService.atualizarUsuario(cpfOuCnpj, usuarioUpdateRequest, imagem);
