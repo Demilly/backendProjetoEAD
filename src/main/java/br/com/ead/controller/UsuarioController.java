@@ -110,4 +110,26 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Ativar Usuário",
+            description = "Método responsável por ativar um usuário."
+    )
+    @PutMapping("/ativar/{cpfOuCnpj}")
+    @ApiResponse(responseCode = "200", description = "Usuário ativado com sucesso")
+    public ResponseEntity<UsuarioResponse> ativarUsuario(@PathVariable String cpfOuCnpj) {
+        var usuarioAtualizado = usuarioService.ativarUsuario(cpfOuCnpj);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    @Operation(
+            summary = "Desativar Usuário",
+            description = "Método responsável por desativar um usuário."
+    )
+    @PutMapping("/desativar/{cpfOuCnpj}")
+    @ApiResponse(responseCode = "200", description = "Usuário desativado com sucesso")
+    public ResponseEntity<UsuarioResponse> desativarUsuario(@PathVariable String cpfOuCnpj) {
+        var usuarioAtualizado = usuarioService.desativarUsuario(cpfOuCnpj);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
 }

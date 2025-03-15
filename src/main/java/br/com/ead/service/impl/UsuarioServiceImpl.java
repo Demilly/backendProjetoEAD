@@ -175,4 +175,24 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new IllegalStateException("Instituição Informada não encontrada."));
     }
 
+    public UsuarioResponse ativarUsuario(String cpfOuCnpj) {
+        Usuario usuario = usuarioRepository.findByCpfOuCnpj(cpfOuCnpj)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        usuario.setStatusUsuario(true);
+        usuarioRepository.save(usuario);
+
+        return usuarioMapper.toUsuarioResponse(usuario);
+    }
+
+    public UsuarioResponse desativarUsuario(String cpfOuCnpj) {
+        Usuario usuario = usuarioRepository.findByCpfOuCnpj(cpfOuCnpj)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        usuario.setStatusUsuario(false);
+        usuarioRepository.save(usuario);
+
+        return usuarioMapper.toUsuarioResponse(usuario);
+    }
+
 }
