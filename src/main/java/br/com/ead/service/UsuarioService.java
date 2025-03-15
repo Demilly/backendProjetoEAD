@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface UsuarioService {
 
     UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest);
@@ -25,4 +27,6 @@ public interface UsuarioService {
     void deletarUsuario(String cpfOuCnpj);
 
     Page<UsuarioResponse> buscarPorTipoUsuarioPaginado(TipoUsuarioEnum tipoUsuarioEnum, Pageable pageable);
+
+    Page<UsuarioResponse> buscarPorTiposUsuarioPaginado(List<TipoUsuarioEnum> tiposUsuarios, Pageable pageable);
 }
