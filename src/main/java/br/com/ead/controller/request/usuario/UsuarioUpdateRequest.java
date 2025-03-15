@@ -17,4 +17,5 @@ public class UsuarioUpdateRequest {
     private Boolean statusUsuario;
     @NotBlank(message = "cpf ou cnpj obrigatório")
     private String cpfOuCnpj;
+    private String urlImagem;
 }
