@@ -76,8 +76,8 @@ public class UsuarioController {
     }
 
     @Operation(
-            summary = "Cadastrar Usuário",
-            description = "Método para cadastrar um novo usuário com uma imagem opcional."
+            summary = "Atualizar Usuário",
+            description = "Método responsável para atualizar um usuário com uma imagem opcional."
     )
     @PutMapping(value = "/atualizar/{cpfOuCnpj}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso")
