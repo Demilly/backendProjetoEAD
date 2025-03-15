@@ -20,5 +20,5 @@ public interface CursoService {
 
     void deletarCurso(String uuid);
 
-    CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest);
+    CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest, MultipartFile imagem);
 }

@@ -76,6 +76,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private void uploadS3(MultipartFile imagem, Usuario usuarioEntity) {
+
+        // Deleta a imagem do S3, se tiver uma URL válida
+        if (usuarioEntity.getUrlImagem() != null && !usuarioEntity.getUrlImagem().isBlank() && !usuarioEntity.getUrlImagem().isEmpty()) {
+            armazenamentoS3Service.deletarArquivo(usuarioEntity.getUrlImagem(), "usuario");
+        }
+
         var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "usuario/"+usuarioEntity.getTipoUsuario().name());
 
         if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {

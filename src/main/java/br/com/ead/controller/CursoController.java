@@ -78,8 +78,9 @@ public class CursoController {
     @ApiResponse(responseCode = "404", description = "Curso não encontrado")
     public ResponseEntity<CursoResponse> atualizarCurso(
             @PathVariable String uuid,
-            @RequestBody UpdateRequest updateRequest){
-        CursoResponse cursoAtualizado = cursoService.atualizarCurso(uuid, updateRequest);
+            @RequestPart(value = "updateRequest") @Valid UpdateRequest updateRequest,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem){
+        CursoResponse cursoAtualizado = cursoService.atualizarCurso(uuid, updateRequest, imagem);
         return ResponseEntity.ok(cursoAtualizado);
     }
 
