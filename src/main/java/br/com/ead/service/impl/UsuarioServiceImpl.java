@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -141,6 +143,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Page<UsuarioResponse> buscarPorTipoUsuarioPaginado(TipoUsuarioEnum tipoUsuarioEnum, Pageable pageable) {
         Page<Usuario> usuarios = usuarioRepository.
                 findByTipoUsuario(tipoUsuarioEnum, pageable);
+        return usuarios.map(usuarioMapper::toUsuarioResponse);
+    }
+
+    @Override
+    public Page<UsuarioResponse> buscarPorTiposUsuarioPaginado(List<TipoUsuarioEnum> tiposUsuarios, Pageable pageable) {
+        Page<Usuario> usuarios = usuarioRepository.findByTipoUsuarioIn(tiposUsuarios, pageable);
+
+        // Converte a lista de Usuario para UsuarioResponse
         return usuarios.map(usuarioMapper::toUsuarioResponse);
     }
 

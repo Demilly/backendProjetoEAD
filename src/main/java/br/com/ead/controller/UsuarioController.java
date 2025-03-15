@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/usuarios")
@@ -52,6 +54,16 @@ public class UsuarioController {
             @PathVariable TipoUsuarioEnum tipoUsuarioEnum,
             Pageable pageable) {
         Page<UsuarioResponse> usuariosResponse = usuarioService.buscarPorTipoUsuarioPaginado(tipoUsuarioEnum, pageable);
+        return ResponseEntity.ok(usuariosResponse);
+    }
+
+    @GetMapping(value = "/tipos")
+    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso")
+    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    public ResponseEntity<Page<UsuarioResponse>> buscarPorTiposUsuarioPaginado(
+            @RequestParam List<TipoUsuarioEnum> tiposUsuarios,
+            Pageable pageable) {
+        Page<UsuarioResponse> usuariosResponse = usuarioService.buscarPorTiposUsuarioPaginado(tiposUsuarios, pageable);
         return ResponseEntity.ok(usuariosResponse);
     }
 
