@@ -9,4 +9,5 @@ public class ModuloRequest {
     private String descricao;
     private Integer ordemModulo;
     private String uuidCurso;
+    private String urlArquivo;
 }

@@ -14,6 +14,7 @@ public interface ModuloMapper {
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "curso", ignore = true)
     @Mapping(target = "notas", ignore = true)
+    @Mapping(target = "urlArquivo", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "aulas", ignore = true)
     @Mapping(target = "aulas[].progressaoAulas", ignore = true)

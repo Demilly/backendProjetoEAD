@@ -1,8 +1,7 @@
 package br.com.ead.model.entity.ensino.modulo;
 
-import br.com.ead.model.entity.ensino.aula.Aula;
 import br.com.ead.model.entity.ensino.Curso;
-import br.com.ead.model.entity.instituicao.Instituicao;
+import br.com.ead.model.entity.ensino.aula.Aula;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -53,6 +52,9 @@ public class Modulo {
 
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas = new ArrayList<>();
+
+    @Column(name = "url_arquivo")
+    private String urlArquivo;
 
     @JsonIgnore
     @ManyToOne
