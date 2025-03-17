@@ -29,4 +29,8 @@ public interface UsuarioService {
     Page<UsuarioResponse> buscarPorTipoUsuarioPaginado(TipoUsuarioEnum tipoUsuarioEnum, Pageable pageable);
 
     Page<UsuarioResponse> buscarPorTiposUsuarioPaginado(List<TipoUsuarioEnum> tiposUsuarios, Pageable pageable);
+
+    UsuarioResponse ativarUsuario(String cpfOuCnpj);
+
+    UsuarioResponse desativarUsuario(String cpfOuCnpj);
 }
