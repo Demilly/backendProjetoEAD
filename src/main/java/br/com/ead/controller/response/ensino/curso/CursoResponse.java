@@ -2,6 +2,7 @@ package br.com.ead.controller.response.ensino.curso;
 
 import br.com.ead.controller.response.ensino.modulo.ModuloResponse;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
+import br.com.ead.model.enums.CategoriaEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,4 +21,5 @@ public class CursoResponse {
     private InstituicaoResponse instituicao;
     private List<ModuloResponse> modulos;
     private String uuid;
+    private CategoriaEnum categoria;
 }

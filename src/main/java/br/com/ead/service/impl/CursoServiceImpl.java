@@ -112,6 +112,7 @@ public class CursoServiceImpl implements CursoService {
         cursoExistente.setDescricao(updateRequest.getDescricao());
         cursoExistente.setAtivo(updateRequest.getAtivo());
         cursoExistente.setUrlBanner(updateRequest.getUrlBanner());
+        cursoExistente.setCategoria(updateRequest.getCategoria());
         cursoExistente.setCargaHoraria(updateRequest.getCargaHoraria());
 
         if (imagem != null && !imagem.isEmpty()) {
