@@ -3,6 +3,7 @@ package br.com.ead.controller;
 import br.com.ead.controller.request.ensino.curso.CursoRequest;
 import br.com.ead.controller.request.ensino.curso.UpdateRequest;
 import br.com.ead.controller.response.ensino.curso.CursoResponse;
+import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.service.CursoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,8 +39,8 @@ public class CursoController {
 
     @GetMapping
     @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
-    public ResponseEntity<List<CursoResponse>> listarCursos() {
-        var cursosPaginados = cursoService.listarCursos();
+    public ResponseEntity<List<CursoResponse>> listarCursos(@RequestParam(required = false) Long idInstituicao) {
+        var cursosPaginados = cursoService.listarCursos(idInstituicao);
         return ResponseEntity.ok(cursosPaginados);
     }
 

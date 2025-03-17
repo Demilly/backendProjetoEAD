@@ -33,8 +33,19 @@ public class CursoServiceImpl implements CursoService {
     private  ArmazenamentoS3Service armazenamentoS3Service;
 
     @Override
-    public List<CursoResponse> listarCursos() {
-        var cursos = cursoRepository.findAll();
+    public List<CursoResponse> listarCursos(Long instituicaoId) {
+        List<Curso> cursos;
+
+        if (instituicaoId != null) {
+            // Criando um objeto Instituicao apenas com o ID
+            Instituicao instituicao = new Instituicao();
+            instituicao.setIdInstituicao(instituicaoId);
+
+            cursos = cursoRepository.findByInstituicao(instituicao);
+        } else {
+            cursos = cursoRepository.findAll();
+        }
+
         return cursos.stream().map(cursoMapper::toCursoResponse).toList();
     }
 
