@@ -3,6 +3,7 @@ package br.com.ead.model.entity.ensino;
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.s3.ArquivoReferencia;
+import br.com.ead.model.enums.CategoriaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -58,6 +59,10 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name = "instituicao_id")
     private Instituicao instituicao;
+
+    @Column(name = "categoria")
+    @Enumerated(EnumType.STRING)
+    private CategoriaEnum categoria;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Matricula> matriculas = new ArrayList<>();
