@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CursoService {
 
-    List<CursoResponse> listarCursos();
+    List<CursoResponse> listarCursos(Long idInstituicao);
 
     Page<CursoResponse> listarCursosPaginada(int page, int size);
 
