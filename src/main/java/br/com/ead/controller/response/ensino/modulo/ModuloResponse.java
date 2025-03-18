@@ -1,6 +1,7 @@
 package br.com.ead.controller.response.ensino.modulo;
 
 import br.com.ead.controller.response.ensino.aula.AulaResponse;
+import br.com.ead.model.entity.ensino.Curso;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,5 @@ public class ModuloResponse {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private List<AulaResponse> aulas;
+    private Curso curso;
 }
