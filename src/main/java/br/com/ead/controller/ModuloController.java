@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/modulos")
@@ -26,9 +24,12 @@ public class ModuloController {
 
     @GetMapping("/listar-por-curso/{uuidCurso}")
     @ApiResponse(responseCode = "200", description = "Lista de Modulo retornada com sucesso")
-    public ResponseEntity<List<ModuloResponse>> listarModuloPorCurso(@PathVariable String uuidCurso) {
-        var modulos = moduloService.listaModuloPorCurso(uuidCurso);
-        return ResponseEntity.ok(modulos);
+    public ResponseEntity<Page<ModuloResponse>> listarModuloPaginadaPorCurso(
+            @PathVariable String uuidCurso,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var modulosPaginada = moduloService.listarModuloPaginadaPorCurso(uuidCurso, page, size);
+        return ResponseEntity.ok(modulosPaginada);
     }
 
     @GetMapping("/paginada")
