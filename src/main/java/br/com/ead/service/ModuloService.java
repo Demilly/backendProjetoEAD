@@ -14,7 +14,7 @@ public interface ModuloService {
 
    ModuloResponse cadastrarModulo(ModuloRequest moduloRequest, MultipartFile arquivo);
 
-    ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest);
+    ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, MultipartFile arquivo);
 
     void deletarCurso(String uuid);
 }

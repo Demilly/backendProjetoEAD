@@ -58,8 +58,9 @@ public class ModuloController {
     @ApiResponse(responseCode = "404", description = "Modulo não encontrado")
     public ResponseEntity<ModuloResponse> atualizarModulo(
             @PathVariable String uuid,
-            @RequestBody UpdateModuloRequest updateModuloRequest){
-        ModuloResponse moduloResponse = moduloService.atualizarModulo(uuid, updateModuloRequest);
+            @RequestPart(value = "updateModuloRequest")  @Valid UpdateModuloRequest updateModuloRequest,
+            @RequestPart(value = "arquivo", required = false) MultipartFile arquivo){
+        ModuloResponse moduloResponse = moduloService.atualizarModulo(uuid, updateModuloRequest, arquivo);
         return ResponseEntity.ok(moduloResponse);
     }
 
