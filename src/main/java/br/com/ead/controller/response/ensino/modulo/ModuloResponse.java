@@ -17,4 +17,6 @@ public class ModuloResponse {
     private LocalDateTime dataAtualizacao;
     private List<AulaResponse> aulas;
     private Curso curso;
+    private String urlArquivo;
+    private String uuid;
 }

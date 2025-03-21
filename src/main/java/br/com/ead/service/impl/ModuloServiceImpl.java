@@ -60,13 +60,17 @@ public class ModuloServiceImpl implements ModuloService {
     }
 
     @Override
-    public ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest) {
+    public ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, MultipartFile arquivo) {
         Modulo moduloExistente = moduloRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Modulo não encontrado com ID: " + uuid));
 
         moduloExistente.setTituloModulo(updateModuloRequest.getTituloModulo());
         moduloExistente.setDescricao(updateModuloRequest.getDescricao());
         moduloExistente.setOrdemModulo(updateModuloRequest.getOrdemModulo());
+
+        if (arquivo != null && !arquivo.isEmpty()) {
+            uploadS3(arquivo, moduloExistente);
+        }
 
         Modulo moduloAtualizado = moduloRepository.save(moduloExistente);
         return moduloMapper.toModuloResponse(moduloAtualizado);
