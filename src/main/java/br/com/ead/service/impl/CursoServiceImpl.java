@@ -119,6 +119,10 @@ public class CursoServiceImpl implements CursoService {
         Curso cursoExistente = cursoRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + uuid));
 
+        if(updateRequest.getIdInstituicao()!= null) {
+            Instituicao instituicao = buscarInstituicao(updateRequest.getIdInstituicao());
+            associarInstituicaoAoCurso(cursoExistente, instituicao);
+        }
         cursoExistente.setNome(updateRequest.getNome());
         cursoExistente.setDescricao(updateRequest.getDescricao());
         cursoExistente.setAtivo(updateRequest.getAtivo());

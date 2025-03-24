@@ -13,4 +13,5 @@ public class UpdateRequest {
     private Boolean ativo;
     @Schema(description = "Categoria", example = "APRENDIZAGEM", allowableValues = "BIBLIOTECA_PROFESSOR, BIBLIOTECA_ALUNO, APRENDIZAGEM")
     private CategoriaEnum categoria;
+    private String idInstituicao;
 }
