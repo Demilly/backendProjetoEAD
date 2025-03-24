@@ -1,6 +1,7 @@
 package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Matricula {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne

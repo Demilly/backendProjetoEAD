@@ -5,9 +5,11 @@ import br.com.ead.controller.request.ensino.curso.UpdateRequest;
 import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
+import br.com.ead.model.entity.usuario.Usuario;
 import br.com.ead.model.mapper.CursoMapper;
 import br.com.ead.repository.CursoRepository;
 import br.com.ead.repository.InstituicaoRepository;
+import br.com.ead.repository.UsuarioRepository;
 import br.com.ead.service.ArmazenamentoS3Service;
 import br.com.ead.service.CursoService;
 import br.com.ead.service.exception.BusinessException;
@@ -31,6 +33,17 @@ public class CursoServiceImpl implements CursoService {
     private final CursoRepository cursoRepository;
     private final CursoMapper cursoMapper;
     private  ArmazenamentoS3Service armazenamentoS3Service;
+    private final UsuarioRepository usuarioRepository;
+
+    @Override
+    public List<CursoResponse> listarCursosDoUsuario(String cpfOuCnpj) {
+        Usuario usuario = usuarioRepository.findByCpfOuCnpj(cpfOuCnpj)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        var cursos = usuario.getCursos();
+
+        return cursos.stream().map(cursoMapper::toCursoResponse).toList();
+    }
 
     @Override
     public List<CursoResponse> listarCursos(Long instituicaoId) {

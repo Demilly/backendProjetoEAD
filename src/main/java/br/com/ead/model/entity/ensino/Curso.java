@@ -65,6 +65,7 @@ public class Curso {
     private CategoriaEnum categoria;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Matricula> matriculas = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)

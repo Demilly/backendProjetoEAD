@@ -28,6 +28,11 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+    @GetMapping("/{cpfOuCnpj}/matriculado")
+    public List<CursoResponse> listarCursosDoUsuarioMatriculado(@PathVariable String cpfOuCnpj) {
+        return cursoService.listarCursosDoUsuario(cpfOuCnpj);
+    }
+
     @GetMapping("/paginada")
     @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
     public ResponseEntity<Page<CursoResponse>> listarCursosPaginada(

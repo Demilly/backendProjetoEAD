@@ -3,6 +3,7 @@ package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
@@ -38,6 +39,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final TelefoneRepository telefoneRepository;
     private final UsuarioMapper usuarioMapper;
     private ArmazenamentoS3Service armazenamentoS3Service;
+
+
 
     @Override
     @Transactional

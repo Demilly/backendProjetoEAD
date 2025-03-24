@@ -78,6 +78,7 @@ public class UsuarioController {
             summary = "Cadastrar Usuário",
             description = "Método para cadastrar um novo usuário com uma imagem opcional."
     )
+    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso")
     @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UsuarioResponse> cadastrarUsuario(
             @RequestPart(value = "usuarioRequest") @Valid UsuarioRequest usuarioRequest,
