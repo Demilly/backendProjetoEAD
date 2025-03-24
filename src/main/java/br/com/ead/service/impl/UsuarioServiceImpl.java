@@ -23,6 +23,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,27 +39,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final TelefoneMapper telefoneMapper;
     private final TelefoneRepository telefoneRepository;
     private final UsuarioMapper usuarioMapper;
-    private ArmazenamentoS3Service armazenamentoS3Service;
-
-
-
-    @Override
-    @Transactional
-    public UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest) {
-
-        var usuarioEntity = usuarioMapper.toUsuario(usuarioRequest);
-
-        determinaInstituicao(usuarioRequest, usuarioEntity);
-
-        usuarioRequest.getTelefones()
-                .stream()
-                .map(telefoneMapper::toTelefone)
-                .forEach(usuarioEntity::addTelefone);
-
-        Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
-        telefoneRepository.saveAll(usuarioSalvo.getTelefones());
-        return usuarioMapper.toUsuarioResponse(usuarioSalvo);
-    }
+    private final ArmazenamentoS3Service armazenamentoS3Service;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest, MultipartFile imagem) {
@@ -75,6 +57,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             uploadS3(imagem, usuarioEntity);
         }
 
+        usuarioEntity.setSenha(passwordEncoder.encode(usuarioEntity.getSenha()));
         Usuario usuarioSalvo = usuarioRepository.save(usuarioEntity);
         telefoneRepository.saveAll(usuarioSalvo.getTelefones());
         return usuarioMapper.toUsuarioResponse(usuarioSalvo);

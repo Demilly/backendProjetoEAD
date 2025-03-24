@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation("org.springframework.boot:spring-boot-starter-security:3.4.3")
 
 	// Lombok (compileOnly para evitar conflitos em tempo de execução)
 	compileOnly 'org.projectlombok:lombok'
@@ -63,31 +64,9 @@ dependencies {
 
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.17.0'
 
-
-
-
-	//aws
-//	implementation group: 'software.amazon.awssdk', name: 'aws-core', version: '2.30.21'
-
-	// Dependência do SDK AWS para o S3
-//	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.780'
-//	// Dependência do Spring Cloud AWS Starter
-//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // Verifique a versão compatível com o seu Spring Boot
-
-
-//	implementation group: 'software.amazon.awssdk', name: 'aws-json-protocol', version: '2.30.21'
-//	implementation group: 'software.amazon.awssdk', name: 'http-auth-aws', version: '2.30.21'
-//	implementation group: 'software.amazon.awssdk', name: 'protocol-core', version: '2.30.21'
-//	implementation group: 'software.amazon.awssdk', name: 'sdk-core', version: '2.30.21'
-//	implementation group: 'software.amazon.awssdk', name: 'utils', version: '2.30.21'
-//
-//
-//
-//	testImplementation group: 'software.amazon.awssdk', name: 's3', version: '2.30.21'
-
-
-
-
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 }
 

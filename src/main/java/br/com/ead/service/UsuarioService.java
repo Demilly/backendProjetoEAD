@@ -3,10 +3,7 @@ package br.com.ead.service;
 
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
-import br.com.ead.controller.response.ensino.curso.CursoResponse;
-import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
-import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface UsuarioService {
-
-    UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest);
 
     UsuarioResponse salvarUsuario(UsuarioRequest usuarioRequest, MultipartFile imagem);
 

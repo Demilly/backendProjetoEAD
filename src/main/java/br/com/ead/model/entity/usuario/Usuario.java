@@ -84,4 +84,11 @@ public class Usuario {
         telefone.setUsuario(this);
         this.telefones.add(telefone);
     }
+
+    public List<String> getAuthorities() {
+        List<String> authorities = new ArrayList<>();
+        authorities.add("ROLE_" + tipoUsuario.name());  // Adiciona o tipo de usuário como uma authority
+        return authorities;
+    }
+
 }
