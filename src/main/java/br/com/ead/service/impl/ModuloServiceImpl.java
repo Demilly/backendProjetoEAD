@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class ModuloServiceImpl implements ModuloService {
@@ -33,6 +35,12 @@ public class ModuloServiceImpl implements ModuloService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Modulo> modulosPaginados = moduloRepository.findByCursoUuid(uuidCurso, pageable);
         return modulosPaginados.map(moduloMapper::toModuloResponse);
+    }
+
+    @Override
+    public List<ModuloResponse> listarModuloPorUuidCurso(String uuidCurso) {
+        List<Modulo> modulos = moduloRepository.findByCursoUuid(uuidCurso);
+        return modulos.stream().map(moduloMapper::toModuloResponse).toList();
     }
 
     @Override
