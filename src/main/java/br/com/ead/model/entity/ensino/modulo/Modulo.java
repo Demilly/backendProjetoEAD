@@ -53,6 +53,9 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LeituraComplementar> leiturasComplementares = new ArrayList<>();
+
     @Column(name = "url_arquivo")
     private String urlArquivo;
 
