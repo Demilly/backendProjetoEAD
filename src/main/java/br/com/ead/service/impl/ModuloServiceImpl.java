@@ -3,6 +3,7 @@ package br.com.ead.service.impl;
 import br.com.ead.controller.request.ensino.modulo.ModuloRequest;
 import br.com.ead.controller.request.ensino.modulo.UpdateModuloRequest;
 import br.com.ead.controller.response.ensino.modulo.ModuloResponse;
+import br.com.ead.model.entity.ensino.modulo.LeituraComplementar;
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.mapper.ModuloMapper;
 import br.com.ead.repository.CursoRepository;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -63,6 +66,21 @@ public class ModuloServiceImpl implements ModuloService {
         }
 
         moduloEntity.setCurso(curso);
+
+        // Verifica se há leituras complementares no request e adiciona ao módulo
+        if (moduloRequest.getLeiturasComplementares() != null && !moduloRequest.getLeiturasComplementares().isEmpty()) {
+            List<LeituraComplementar> leiturasComplementares = moduloRequest.getLeiturasComplementares().stream()
+                    .map(leituraRequest -> {
+                        LeituraComplementar leitura = new LeituraComplementar();
+                        leitura.setTitulo(leituraRequest.getTitulo());
+                        leitura.setTxtUrl(leituraRequest.getTxtUrl());
+                        leitura.setModulo(moduloEntity); // Relaciona com o módulo
+                        return leitura;
+                    })
+                    .collect(Collectors.toList());
+            moduloEntity.setLeiturasComplementares(leiturasComplementares);
+        }
+
         var moduloSalvo = moduloRepository.save(moduloEntity);
         return moduloMapper.toModuloResponse(moduloSalvo);
     }
@@ -78,6 +96,25 @@ public class ModuloServiceImpl implements ModuloService {
 
         if (arquivo != null && !arquivo.isEmpty()) {
             uploadS3(arquivo, moduloExistente);
+        }
+
+        // Atualiza as leituras complementares, garantindo que antigas sejam removidas e novas adicionadas
+        if (updateModuloRequest.getLeiturasComplementares() != null) {
+            // Remove todas as leituras antigas
+            moduloExistente.getLeiturasComplementares().clear();
+
+            // Adiciona as novas leituras complementares
+            List<LeituraComplementar> novasLeituras = updateModuloRequest.getLeiturasComplementares().stream()
+                    .map(leituraData -> {
+                        LeituraComplementar leitura = new LeituraComplementar();
+                        leitura.setTitulo(leituraData.getTitulo()); // Obtém do mapa
+                        leitura.setTxtUrl(leituraData.getTxtUrl()); // Obtém do mapa
+                        leitura.setModulo(moduloExistente); // Relaciona com o módulo
+                        return leitura;
+                    })
+                    .collect(Collectors.toList());
+
+            moduloExistente.getLeiturasComplementares().addAll(novasLeituras);
         }
 
         Modulo moduloAtualizado = moduloRepository.save(moduloExistente);
