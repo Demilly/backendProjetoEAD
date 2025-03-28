@@ -70,7 +70,7 @@ public class ModuloController {
     public ResponseEntity<ModuloResponse> atualizarModulo(
             @PathVariable String uuid,
             @RequestPart(value = "updateModuloRequest")  @Valid UpdateModuloRequest updateModuloRequest,
-            @RequestPart(value = "arquivo", required = false) List<MultipartFile> arquivos){
+            @RequestPart(value = "arquivos", required = false) List<MultipartFile> arquivos){
         ModuloResponse moduloResponse = moduloService.atualizarModulo(uuid, updateModuloRequest, arquivos);
         return ResponseEntity.ok(moduloResponse);
     }
