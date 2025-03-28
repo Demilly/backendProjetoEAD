@@ -14,7 +14,7 @@ public interface InstituicaoMapper {
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "usuarios", ignore = true)
-    @Mapping(target = "cursos", ignore = true)
+//    @Mapping(target = "cursos", ignore = true)
     Instituicao toInstituicao(InstituicaoRequest instituicaoRequest);
 
     InstituicaoResponse toInstituicaoResponse(Instituicao instituicao);

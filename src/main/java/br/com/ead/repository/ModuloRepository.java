@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface ModuloRepository extends JpaRepository<Modulo, Long> {
 
-    Page<Modulo> findByCursoUuid(String uuidCurso, Pageable pageable);
+    Page<Modulo> findAllByCursoUuid(String uuidCurso, Pageable pageable);
 
-    List<Modulo> findByCursoUuid(String uuidCurso);
+    List<Modulo> findAllByCursoUuid(String uuidCurso);
 
     Optional<Modulo> findByUuid(String uuid);
 }

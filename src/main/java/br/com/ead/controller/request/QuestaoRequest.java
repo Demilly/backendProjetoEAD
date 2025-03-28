@@ -1,7 +1,5 @@
 package br.com.ead.controller.request;
 
-import br.com.ead.model.entity.ensino.modulo.Modulo;
-import br.com.ead.model.entity.ensino.modulo.Resposta;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,6 +14,7 @@ public class QuestaoRequest {
     private String explicacao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
-    private Modulo modulo;
-    private Set<Resposta> respostas;
+    private String uuidModulo;
+    private String uuidCurso;
+    private Set<RespostaRequest> respostas;
 }

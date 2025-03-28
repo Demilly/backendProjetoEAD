@@ -37,13 +37,13 @@ public class ModuloServiceImpl implements ModuloService {
     @Override
     public Page<ModuloResponse> listarModuloPaginadaPorCurso(String uuidCurso, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Modulo> modulosPaginados = moduloRepository.findByCursoUuid(uuidCurso, pageable);
+        Page<Modulo> modulosPaginados = moduloRepository.findAllByCursoUuid(uuidCurso, pageable);
         return modulosPaginados.map(moduloMapper::toModuloResponse);
     }
 
     @Override
     public List<ModuloResponse> listarModuloPorUuidCurso(String uuidCurso) {
-        List<Modulo> modulos = moduloRepository.findByCursoUuid(uuidCurso);
+        List<Modulo> modulos = moduloRepository.findAllByCursoUuid(uuidCurso);
         return modulos.stream().map(moduloMapper::toModuloResponse).toList();
     }
 

@@ -1,6 +1,6 @@
 package br.com.ead.controller.response.ensino.modulo.questao;
 
-import br.com.ead.model.entity.ensino.modulo.Resposta;
+import br.com.ead.controller.response.RespostaResponse;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,5 +16,5 @@ public class QuestaoResponse {
     private String explicacao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
-    private Set<Resposta> respostas;
+    private Set<RespostaResponse> respostas;
 }

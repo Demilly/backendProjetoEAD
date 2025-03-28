@@ -2,13 +2,13 @@ package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
-import br.com.ead.model.entity.s3.ArquivoReferencia;
 import br.com.ead.model.enums.CategoriaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -65,7 +65,6 @@ public class Curso {
     private CategoriaEnum categoria;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Matricula> matriculas = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)

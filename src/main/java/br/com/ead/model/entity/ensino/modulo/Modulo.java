@@ -5,8 +5,10 @@ import br.com.ead.model.entity.ensino.aula.Aula;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -82,5 +85,18 @@ public class Modulo {
     public void addNota(Nota nota) {
         nota.setModulo(this);
         this.notas.add(nota);
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("idModulo", idModulo)
+                .append("uuid", uuid)
+                .append("tituloModulo", tituloModulo)
+                .append("descricao", descricao)
+                .append("ordemModulo", ordemModulo)
+                .append("dataCriacao", dataCriacao)
+                .append("dataAtualizacao", dataAtualizacao)
+                .toString();
     }
 }

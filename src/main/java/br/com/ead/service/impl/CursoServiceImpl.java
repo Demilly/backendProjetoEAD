@@ -158,6 +158,6 @@ public class CursoServiceImpl implements CursoService {
 
     private void associarInstituicaoAoCurso(Curso curso, Instituicao instituicao) {
         curso.setInstituicao(instituicao);
-        instituicao.addCurso(curso);
+//        instituicao.add(curso);
     }
 }

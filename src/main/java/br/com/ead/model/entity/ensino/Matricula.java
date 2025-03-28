@@ -26,6 +26,7 @@ public class Matricula {
     @JsonIgnore
     private Usuario usuario;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;

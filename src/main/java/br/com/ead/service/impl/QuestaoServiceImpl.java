@@ -5,14 +5,14 @@ import br.com.ead.controller.response.ensino.modulo.questao.QuestaoResponse;
 import br.com.ead.model.entity.ensino.modulo.Questao;
 import br.com.ead.model.entity.ensino.modulo.Resposta;
 import br.com.ead.model.mapper.QuestaoMapper;
+import br.com.ead.repository.ModuloRepository;
 import br.com.ead.repository.QuestaoRepository;
-import br.com.ead.repository.RespostaRepository;
 import br.com.ead.service.QuestaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,24 +21,23 @@ public class QuestaoServiceImpl implements QuestaoService {
 
     private final QuestaoRepository questaoRepository;
     private final QuestaoMapper questaoMapper;
-    private final RespostaRepository respostaRepository;
+    private final ModuloRepository moduloRepository;
 
     @Override
+    @Transactional
     public QuestaoResponse criarQuestao(QuestaoRequest questaoRequest) {
         Questao questaoNaoSalva = questaoMapper.toQuestao(questaoRequest);
 
+        var modulo = moduloRepository.findByUuid(questaoRequest.getUuidModulo()).orElseThrow();
+        questaoNaoSalva.setModulo(modulo);
+
+        if (questaoNaoSalva.getRespostas() != null) {
+            for (Resposta resposta : questaoNaoSalva.getRespostas()) {
+                resposta.setQuestao(questaoNaoSalva);
+            }
+        }
+
         Questao novaQuestao = questaoRepository.save(questaoNaoSalva);
-        Set<Resposta> respostas = questaoRequest.getRespostas().stream()
-                .map(resposta -> {
-                    Resposta novaResposta = new Resposta();
-                    novaResposta.setDescricao(resposta.getDescricao());
-                    novaResposta.setCorreta(resposta.isCorreta());
-                    novaResposta.setQuestao(novaQuestao);
-                    return respostaRepository.save(novaResposta);
-                }).collect(Collectors.toSet());
-
-        novaQuestao.setRespostas(respostas);
-
         return questaoMapper.toQuestaoResponse(novaQuestao);
     }
 
@@ -58,6 +57,13 @@ public class QuestaoServiceImpl implements QuestaoService {
                     questao.setDescricao(questaoRequest.getDescricao());
                     questao.setExplicacao(questaoRequest.getExplicacao());
                     questao.setPontuacao(questaoRequest.getPontuacao());
+
+                    questaoRequest.getRespostas().clear();
+                    if (questaoRequest.getRespostas() != null) {
+                        for (Resposta resposta : questao.getRespostas()) {
+                            resposta.setQuestao(questao);
+                        }
+                    }
 
                     Questao questaoSalva = questaoRepository.save(questao);
                     return questaoMapper.toQuestaoResponse(questaoSalva);

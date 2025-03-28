@@ -1,5 +1,6 @@
 package br.com.ead.model.entity.ensino.modulo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,6 +48,7 @@ public class Questao {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "modulo_id", nullable = false)
     private Modulo modulo;
