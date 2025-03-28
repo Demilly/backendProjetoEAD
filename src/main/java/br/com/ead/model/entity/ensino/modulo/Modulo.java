@@ -56,8 +56,10 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LeituraComplementar> leiturasComplementares = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "modulo_arquivos", joinColumns = @JoinColumn(name = "modulo_id"))
     @Column(name = "url_arquivo")
-    private String urlArquivo;
+    private List<String> urlArquivo = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne

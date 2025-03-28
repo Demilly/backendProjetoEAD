@@ -52,14 +52,15 @@ public class ModuloController {
     }
 
     @Operation(
-            summary = "Cadastrar Modulo",
-            description = "Método para cadastrar um novo modulo com um arquivo opcional."
+            summary = "Cadastrar Módulo com múltiplos arquivos",
+            description = "Método para cadastrar um novo módulo com arquivos opcionais."
     )
     @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ModuloResponse> cadastrarModulo(
-            @RequestPart(value = "moduloRequest")  @Valid ModuloRequest moduloRequest,
-            @RequestPart(value = "arquivo", required = false) MultipartFile arquivo) {
-        ModuloResponse novoModulo = moduloService.cadastrarModulo(moduloRequest, arquivo);
+            @RequestPart(value = "moduloRequest") @Valid ModuloRequest moduloRequest,
+            @RequestPart(value = "arquivos", required = false) List<MultipartFile> arquivos) {
+
+        ModuloResponse novoModulo = moduloService.cadastrarModulo(moduloRequest, arquivos);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoModulo);
     }
 
@@ -69,8 +70,8 @@ public class ModuloController {
     public ResponseEntity<ModuloResponse> atualizarModulo(
             @PathVariable String uuid,
             @RequestPart(value = "updateModuloRequest")  @Valid UpdateModuloRequest updateModuloRequest,
-            @RequestPart(value = "arquivo", required = false) MultipartFile arquivo){
-        ModuloResponse moduloResponse = moduloService.atualizarModulo(uuid, updateModuloRequest, arquivo);
+            @RequestPart(value = "arquivo", required = false) List<MultipartFile> arquivos){
+        ModuloResponse moduloResponse = moduloService.atualizarModulo(uuid, updateModuloRequest, arquivos);
         return ResponseEntity.ok(moduloResponse);
     }
 
@@ -78,7 +79,7 @@ public class ModuloController {
     @ApiResponse(responseCode = "204", description = "Modulo deletado com sucesso")
     @ApiResponse(responseCode = "404", description = "Modulo não encontrado")
     public ResponseEntity<Void> deletarModulo(@PathVariable String uuid) {
-        moduloService.deletarCurso(uuid);
+        moduloService.deletarModulo(uuid);
         return ResponseEntity.noContent().build();
     }
 }

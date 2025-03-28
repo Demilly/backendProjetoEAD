@@ -16,9 +16,9 @@ public interface ModuloService {
 
     Page<ModuloResponse> listarModuloPaginada(int page, int size);
 
-   ModuloResponse cadastrarModulo(ModuloRequest moduloRequest, MultipartFile arquivo);
+    ModuloResponse cadastrarModulo(ModuloRequest moduloRequest, List<MultipartFile> arquivos);
 
-    ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, MultipartFile arquivo);
+    ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, List<MultipartFile> arquivos);
 
-    void deletarCurso(String uuid);
+    void deletarModulo(String uuid);
 }

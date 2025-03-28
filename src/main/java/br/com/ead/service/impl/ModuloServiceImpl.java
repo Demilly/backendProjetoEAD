@@ -18,10 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -56,25 +57,24 @@ public class ModuloServiceImpl implements ModuloService {
 
     @Transactional
     @Override
-    public ModuloResponse cadastrarModulo(ModuloRequest moduloRequest, MultipartFile arquivo) {
+    public ModuloResponse cadastrarModulo(ModuloRequest moduloRequest, List<MultipartFile> arquivos) {
         var moduloEntity = moduloMapper.toModulo(moduloRequest);
         var curso = cursoRepository.findByUuid(moduloRequest.getUuidCurso())
                 .orElseThrow(() -> new BusinessException("Curso não localizado para o código informado.", moduloEntity.getCurso().getUuid()));
 
-        if (arquivo != null && !arquivo.isEmpty()) {
-            uploadS3(arquivo, moduloEntity);
+        if (!CollectionUtils.isEmpty(arquivos)) {
+            uploadS3(arquivos, moduloEntity);
         }
 
         moduloEntity.setCurso(curso);
 
-        // Verifica se há leituras complementares no request e adiciona ao módulo
         if (moduloRequest.getLeiturasComplementares() != null && !moduloRequest.getLeiturasComplementares().isEmpty()) {
             List<LeituraComplementar> leiturasComplementares = moduloRequest.getLeiturasComplementares().stream()
                     .map(leituraRequest -> {
                         LeituraComplementar leitura = new LeituraComplementar();
                         leitura.setTitulo(leituraRequest.getTitulo());
                         leitura.setTxtUrl(leituraRequest.getTxtUrl());
-                        leitura.setModulo(moduloEntity); // Relaciona com o módulo
+                        leitura.setModulo(moduloEntity);
                         return leitura;
                     })
                     .collect(Collectors.toList());
@@ -86,7 +86,7 @@ public class ModuloServiceImpl implements ModuloService {
     }
 
     @Override
-    public ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, MultipartFile arquivo) {
+    public ModuloResponse atualizarModulo(String uuid, UpdateModuloRequest updateModuloRequest, List<MultipartFile> arquivos) {
         Modulo moduloExistente = moduloRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Modulo não encontrado com ID: " + uuid));
 
@@ -94,25 +94,23 @@ public class ModuloServiceImpl implements ModuloService {
         moduloExistente.setDescricao(updateModuloRequest.getDescricao());
         moduloExistente.setOrdemModulo(updateModuloRequest.getOrdemModulo());
 
-        if (arquivo != null && !arquivo.isEmpty()) {
-            uploadS3(arquivo, moduloExistente);
+        if (arquivos != null && !arquivos.isEmpty()) {
+            moduloExistente.setUrlArquivo(new ArrayList<>());
+            uploadS3(arquivos, moduloExistente);
         }
 
-        // Atualiza as leituras complementares, garantindo que antigas sejam removidas e novas adicionadas
         if (updateModuloRequest.getLeiturasComplementares() != null) {
-            // Remove todas as leituras antigas
             moduloExistente.getLeiturasComplementares().clear();
 
-            // Adiciona as novas leituras complementares
             List<LeituraComplementar> novasLeituras = updateModuloRequest.getLeiturasComplementares().stream()
                     .map(leituraData -> {
                         LeituraComplementar leitura = new LeituraComplementar();
-                        leitura.setTitulo(leituraData.getTitulo()); // Obtém do mapa
-                        leitura.setTxtUrl(leituraData.getTxtUrl()); // Obtém do mapa
-                        leitura.setModulo(moduloExistente); // Relaciona com o módulo
+                        leitura.setTitulo(leituraData.getTitulo());
+                        leitura.setTxtUrl(leituraData.getTxtUrl());
+                        leitura.setModulo(moduloExistente);
                         return leitura;
                     })
-                    .collect(Collectors.toList());
+                    .toList();
 
             moduloExistente.getLeiturasComplementares().addAll(novasLeituras);
         }
@@ -122,23 +120,28 @@ public class ModuloServiceImpl implements ModuloService {
     }
 
     @Override
-    public void deletarCurso(String uuid) {
+    public void deletarModulo(String uuid) {
         Modulo modulo = moduloRepository.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException("Modulo não localizado para o ID informado.", uuid));
+
+        if (modulo.getUrlArquivo() != null && !modulo.getUrlArquivo().isEmpty()) {
+            for (String urlArquivo : modulo.getUrlArquivo()) {
+                armazenamentoS3Service.deletarArquivo(urlArquivo, "modulo/documento");
+            }
+        }
         moduloRepository.delete(modulo);
     }
 
-    private void uploadS3(MultipartFile arquivo, Modulo moduloEntity) {
-
-        // Deleta o arquivo do S3, se tiver uma URL válida
-        if (moduloEntity.getUrlArquivo() != null && !moduloEntity.getUrlArquivo().isBlank() && !moduloEntity.getUrlArquivo().isEmpty()) {
-            armazenamentoS3Service.deletarArquivo(moduloEntity.getUrlArquivo(), " modulo");
+    private void uploadS3(List<MultipartFile> arquivos, Modulo moduloEntity) {
+        if (moduloEntity.getUrlArquivo() == null) {
+            moduloEntity.setUrlArquivo(new ArrayList<>());
         }
+        for (MultipartFile arquivo : arquivos) {
+            var responseS3 = armazenamentoS3Service.uploadDocumento(arquivo, "modulo/documento");
 
-        var responseS3 = armazenamentoS3Service.uploadDocumento(arquivo, "modulo");
-
-        if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
-            moduloEntity.setUrlArquivo(responseS3.getCaminhoArquivo());
+            if (responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
+                moduloEntity.getUrlArquivo().add(responseS3.getCaminhoArquivo());
+            }
         }
     }
 }

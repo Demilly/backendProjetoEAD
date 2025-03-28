@@ -6,6 +6,7 @@ import br.com.ead.model.entity.ensino.modulo.LeituraComplementar;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,7 +19,7 @@ public class ModuloResponse {
     private LocalDateTime dataAtualizacao;
     private List<AulaResponse> aulas;
     private Curso curso;
-    private String urlArquivo;
+    private List<String> urlArquivo;
     private String uuid;
     private List<LeituraComplementar> leiturasComplementares;
 }
