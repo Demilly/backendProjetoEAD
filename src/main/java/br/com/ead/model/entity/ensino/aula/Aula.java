@@ -49,13 +49,6 @@ public class Aula {
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProgressaoAula> progressaoAulas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Questao> questoes = new ArrayList<>();
-
-    public void addQuestoes(Questao questao) {
-        questao.setAula(this);
-        this.questoes.add(questao);
-    }
 
     public void addVideos(VideoAula videoAula) {
         videoAula.setAula(this);

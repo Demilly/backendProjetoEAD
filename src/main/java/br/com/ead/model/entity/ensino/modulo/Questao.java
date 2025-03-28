@@ -1,9 +1,5 @@
 package br.com.ead.model.entity.ensino.modulo;
 
-
-import br.com.ead.model.entity.ensino.aula.Aula;
-import br.com.ead.model.entity.ensino.aula.Comentario;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -27,31 +24,33 @@ public class Questao {
     @Column(name = "id_questao")
     private Long idQuestao;
 
-    @Column(name = "titulo_questao")
-    private String tituloQuestao;
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
+
+    @Column(name = "pergunta", nullable = false)
+    private String pergunta;
 
     @Column(name = "descricao")
     private String descricao;
 
-    @Column(name = "resposta_correta")
-    private String respostaCorreta;
-
-    @Column(name = "pontuacao")
+    @Column(name = "pontuacao", nullable = false)
     private Integer pontuacao;
 
-    @Column(name = "data_criacao")
+    @Column(name = "explicacao")
+    private String explicacao;
+
     @CreationTimestamp
+    @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
 
-    @Column(name = "data_atualizacao")
     @UpdateTimestamp
+    @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "aula_id")
-    private Aula aula;
+    @JoinColumn(name = "modulo_id", nullable = false)
+    private Modulo modulo;
 
     @OneToMany(mappedBy = "questao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comentario> comentarios = new HashSet<>();
+    private Set<Resposta> respostas = new HashSet<>();
 }

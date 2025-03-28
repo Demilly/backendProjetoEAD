@@ -56,6 +56,9 @@ public class Modulo {
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LeituraComplementar> leiturasComplementares = new ArrayList<>();
 
+    @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Questao> questoes = new ArrayList<>();
+
     @ElementCollection
     @CollectionTable(name = "modulo_arquivos", joinColumns = @JoinColumn(name = "modulo_id"))
     @Column(name = "url_arquivo")
@@ -65,6 +68,11 @@ public class Modulo {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    public void addQuestoes(Questao questao) {
+        questao.setModulo(this);
+        this.questoes.add(questao);
+    }
 
     public void addAulas(Aula aula) {
         aula.setModulo(this);
