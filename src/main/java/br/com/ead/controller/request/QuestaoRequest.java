@@ -1,5 +1,6 @@
 package br.com.ead.controller.request;
 
+import br.com.ead.model.enums.TipoPerguntaEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Set;
 public class QuestaoRequest {
 
     private String pergunta;
+    private TipoPerguntaEnum tipoPergunta;
     private String descricao;
     private Integer pontuacao;
     private String explicacao;

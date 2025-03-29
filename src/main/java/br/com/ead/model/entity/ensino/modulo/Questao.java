@@ -1,5 +1,6 @@
 package br.com.ead.model.entity.ensino.modulo;
 
+import br.com.ead.model.enums.TipoPerguntaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,9 @@ public class Questao {
 
     @Column(name = "explicacao")
     private String explicacao;
+
+    @Column(name = "tipo_pergunta")
+    private TipoPerguntaEnum tipoPergunta;
 
     @CreationTimestamp
     @Column(name = "data_criacao")

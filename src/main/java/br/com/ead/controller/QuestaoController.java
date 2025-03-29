@@ -1,11 +1,10 @@
 package br.com.ead.controller;
 
 import br.com.ead.controller.request.QuestaoRequest;
-import br.com.ead.controller.response.ensino.curso.CursoResponse;
-import br.com.ead.controller.response.ensino.modulo.ModuloResponse;
 import br.com.ead.controller.response.ensino.modulo.questao.QuestaoResponse;
 import br.com.ead.service.QuestaoService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +52,9 @@ public class QuestaoController {
     }
 
     @PutMapping("/{uuid}")
-    public ResponseEntity<QuestaoResponse> atualizarQuestao(@PathVariable String uuid, @RequestBody QuestaoRequest questaoRequest) {
-        QuestaoResponse questaoAtualizada = questaoService.atualizarQuestao(uuid, questaoRequest);
+    public ResponseEntity<QuestaoResponse> atualizarQuestao(@PathVariable String uuid,
+                                                            @RequestPart(value = "updateRequest") @Valid QuestaoRequest updateRequest) {
+        QuestaoResponse questaoAtualizada = questaoService.atualizarQuestao(uuid, updateRequest);
         return ResponseEntity.ok(questaoAtualizada);
     }
 
