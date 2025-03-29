@@ -9,6 +9,9 @@ import br.com.ead.repository.ModuloRepository;
 import br.com.ead.repository.QuestaoRepository;
 import br.com.ead.service.QuestaoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +50,20 @@ public class QuestaoServiceImpl implements QuestaoService {
         return questoes.stream()
                 .map(questaoMapper::toQuestaoResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<QuestaoResponse> listarQuestoesPaginada(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Questao> questoesPaginados = questaoRepository.findAll(pageable);
+        return questoesPaginados.map(questaoMapper::toQuestaoResponse);
+    }
+
+    @Override
+    public Page<QuestaoResponse> listarQuestoesPaginadaPorModulo(String uuidModulo, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Questao> questoesPaginados = questaoRepository.findAllByModuloUuid(uuidModulo, pageable);
+        return questoesPaginados.map(questaoMapper::toQuestaoResponse);
     }
 
     @Override

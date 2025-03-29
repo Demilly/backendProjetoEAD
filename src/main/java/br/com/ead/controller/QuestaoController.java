@@ -1,9 +1,13 @@
 package br.com.ead.controller;
 
 import br.com.ead.controller.request.QuestaoRequest;
+import br.com.ead.controller.response.ensino.curso.CursoResponse;
+import br.com.ead.controller.response.ensino.modulo.ModuloResponse;
 import br.com.ead.controller.response.ensino.modulo.questao.QuestaoResponse;
 import br.com.ead.service.QuestaoService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +31,25 @@ public class QuestaoController {
     public ResponseEntity<List<QuestaoResponse>> listarTodasQuestoes() {
         List<QuestaoResponse> questoes = questaoService.listarTodasQuestoes();
         return ResponseEntity.ok(questoes);
+    }
+
+    @GetMapping("/paginada")
+    @ApiResponse(responseCode = "200", description = "Lista de questões retornada com sucesso")
+    public ResponseEntity<Page<QuestaoResponse>> listarQuestoesPaginada(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var questoesPaginados = questaoService.listarQuestoesPaginada(page, size);
+        return ResponseEntity.ok(questoesPaginados);
+    }
+
+    @GetMapping("/listar-por-modulo/{uuidModulo}")
+    @ApiResponse(responseCode = "200", description = "Lista de Questoes retornada com sucesso")
+    public ResponseEntity<Page<QuestaoResponse>> listarQuestoesPaginadaPorModulo(
+            @PathVariable String uuidModulo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var questoesPaginadas = questaoService.listarQuestoesPaginadaPorModulo(uuidModulo, page, size);
+        return ResponseEntity.ok(questoesPaginadas);
     }
 
     @PutMapping("/{uuid}")
