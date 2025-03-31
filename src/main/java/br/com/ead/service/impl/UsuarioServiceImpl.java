@@ -3,9 +3,7 @@ package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
-import br.com.ead.controller.response.ensino.curso.CursoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
-import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.entity.usuario.Usuario;
 import br.com.ead.model.enums.TipoUsuarioEnum;
@@ -21,13 +19,13 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -144,18 +142,38 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Page<UsuarioResponse> buscarPorTipoUsuarioPaginado(TipoUsuarioEnum tipoUsuarioEnum, Pageable pageable) {
+
+
         Page<Usuario> usuarios = usuarioRepository.
                 findByTipoUsuario(tipoUsuarioEnum, pageable);
+
+
         return usuarios.map(usuarioMapper::toUsuarioResponse);
+    }
+
+    // Verifica se o campo de ordenação é válido
+    private boolean isValidSortField(String field) {
+        return field.equals("nome") || field.equals("email") || field.equals("tipoUsuario"); // Adicione outros campos válidos
     }
 
     @Override
-    public Page<UsuarioResponse> buscarPorTiposUsuarioPaginado(List<TipoUsuarioEnum> tiposUsuarios, Pageable pageable) {
-        Page<Usuario> usuarios = usuarioRepository.findByTipoUsuarioIn(tiposUsuarios, pageable);
+    public Page<UsuarioResponse> buscarPorTiposUsuariosAdmPaginado(Pageable pageable) {
 
-        // Converte a lista de Usuario para UsuarioResponse
+        // Se o pageable tiver ordenação inválida, removemos
+        if (pageable.getSort().isSorted()) {
+            for (Sort.Order order : pageable.getSort()) {
+                // Se a ordenação for por um campo inválido (exemplo: "string"), removemos
+                if (!isValidSortField(order.getProperty())) {
+                    // Define uma ordenação padrão por "nome"
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome").ascending());
+                    break;
+                }
+            }
+        }
+        Page<Usuario> usuarios = usuarioRepository.findAllUsersAdm( pageable);
         return usuarios.map(usuarioMapper::toUsuarioResponse);
     }
+
 
     private void determinaInstituicao(UsuarioRequest usuarioRequest, Usuario usuario) {
         if (usuarioRequest.getInstituicao() == null || usuarioRequest.getInstituicao().isEmpty()) {
