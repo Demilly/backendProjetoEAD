@@ -48,7 +48,7 @@ public class CursoController {
         return ResponseEntity.ok(cursosPaginados);
     }
 
-    @GetMapping
+    @GetMapping("/listar-por-instituicao")
     @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
     public ResponseEntity<List<CursoResponse>> listarCursos(@RequestParam(required = false) Long idInstituicao) {
         var cursosPaginados = cursoService.listarCursos(idInstituicao);

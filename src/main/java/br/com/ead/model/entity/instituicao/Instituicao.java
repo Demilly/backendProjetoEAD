@@ -56,7 +56,7 @@ public class Instituicao {
     @Column(name = "quantidade_licencas_aluno")
     private Integer quantidadeLicencasAluno;
 
-    @Column(name = "ativo")
-    private Boolean ativo;
+    @Column(name = "ativa")
+    private Boolean ativa;
 
 }

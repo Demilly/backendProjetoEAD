@@ -10,4 +10,5 @@ public class InstituicaoRequest {
     private Integer quantidadeLicencasProfessor;
     private Integer quantidadeLicencasAluno;
     private String uuidCurso;
+    private Boolean ativa;
 }

@@ -15,7 +15,6 @@ public interface InstituicaoMapper {
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "usuarios", ignore = true)
     @Mapping(target = "cursos", ignore = true)
-    @Mapping(target = "ativo", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     Instituicao toInstituicao(InstituicaoRequest instituicaoRequest);
 
@@ -26,7 +25,7 @@ public interface InstituicaoMapper {
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "usuarios", ignore = true)
     @Mapping(target = "cursos", ignore = true)
-    @Mapping(target = "ativo", ignore = true)
+    @Mapping(target = "ativa", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     void updateInstituicaoFromRequest(InstituicaoRequest instituicaoRequest, @MappingTarget Instituicao instituicao);
 }
