@@ -10,7 +10,7 @@ public interface InstituicaoService {
 
     List<InstituicaoResponse> listarTodasInstituicoes();
 
-    InstituicaoResponse salvarInstituicao(Instituicao instituicao);
+    InstituicaoResponse salvarInstituicao(InstituicaoRequest instituicaoRequest);
 
     InstituicaoResponse atualizarInstituicao(String cpfCnpj, InstituicaoRequest instituicaoRequest);
 

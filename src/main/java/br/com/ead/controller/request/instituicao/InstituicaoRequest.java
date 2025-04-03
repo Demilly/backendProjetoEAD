@@ -9,4 +9,5 @@ public class InstituicaoRequest {
     private String cpfOuCnpj;
     private Integer quantidadeLicencasProfessor;
     private Integer quantidadeLicencasAluno;
+    private String uuidCurso;
 }

@@ -11,10 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
@@ -29,6 +26,9 @@ public class Instituicao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_instituicao")
     private Long idInstituicao;
+
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "nome_instituicao")
     private String nomeInstituicao;
@@ -59,8 +59,4 @@ public class Instituicao {
     @Column(name = "ativo")
     private Boolean ativo;
 
-//    public void addCurso(Curso curso) {
-//        cursos.add(curso);
-//        curso.setInstituicao(this);
-//    }
 }
