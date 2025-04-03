@@ -14,11 +14,17 @@ public interface InstituicaoMapper {
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "usuarios", ignore = true)
-//    @Mapping(target = "cursos", ignore = true)
+    @Mapping(target = "cursos", ignore = true)
+    @Mapping(target = "ativo", ignore = true)
     Instituicao toInstituicao(InstituicaoRequest instituicaoRequest);
 
     InstituicaoResponse toInstituicaoResponse(Instituicao instituicao);
 
     @Mapping(target = "idInstituicao", ignore = true)
+    @Mapping(target = "dataCriacao", ignore = true)
+    @Mapping(target = "dataAtualizacao", ignore = true)
+    @Mapping(target = "usuarios", ignore = true)
+    @Mapping(target = "cursos", ignore = true)
+    @Mapping(target = "ativo", ignore = true)
     void updateInstituicaoFromRequest(InstituicaoRequest instituicaoRequest, @MappingTarget Instituicao instituicao);
 }

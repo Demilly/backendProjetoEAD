@@ -1,7 +1,7 @@
 package br.com.ead.model.entity.ensino.modulo;
 
 import br.com.ead.model.entity.ensino.Curso;
-import br.com.ead.model.entity.ensino.aula.Aula;
+import br.com.ead.model.entity.ensino.aula.AulaEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -51,7 +51,7 @@ public class Modulo {
     private LocalDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Aula> aulas = new ArrayList<>();
+    private List<AulaEntity> aulas = new ArrayList<>();
 
     @OneToMany(mappedBy = "modulo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas = new ArrayList<>();
@@ -77,9 +77,9 @@ public class Modulo {
         this.questoes.add(questao);
     }
 
-    public void addAulas(Aula aula) {
-        aula.setModulo(this);
-        this.aulas.add(aula);
+    public void addAulas(AulaEntity aulaEntity) {
+        aulaEntity.setModulo(this);
+        this.aulas.add(aulaEntity);
     }
 
     public void addNota(Nota nota) {

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,9 @@ public class VideoAula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_video_aula")
     private Long idVideoAula;
+
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "url")
     private String url;
@@ -35,5 +39,5 @@ public class VideoAula {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aula_id")
-    private Aula aula;
+    private AulaEntity aula;
 }

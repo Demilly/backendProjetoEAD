@@ -11,5 +11,5 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 
     Optional<Curso> findByUuid(String uuid);
 
-    List<Curso> findByInstituicao(Instituicao instituicao);
+    List<Curso> findByInstituicoesContaining(Instituicao instituicao);
 }

@@ -1,6 +1,7 @@
 package br.com.ead.model.mapper;
 
 import br.com.ead.controller.request.VideoAulaRequest;
+import br.com.ead.controller.response.ensino.aula.VideoAulaResponse;
 import br.com.ead.model.entity.ensino.aula.VideoAula;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,5 +11,8 @@ public interface VideoAulaMapper {
 
     @Mapping(target = "idVideoAula", ignore = true)
     @Mapping(target = "aula", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
     VideoAula toVideoAula(VideoAulaRequest videoAulaRequest);
+
+    VideoAulaResponse toVideoAula(VideoAula videoAula);
 }

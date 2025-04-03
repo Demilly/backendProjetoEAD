@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -59,7 +60,13 @@ public class CursoController {
 
     @Operation(
             summary = "Cadastrar Curso",
-            description = "Método para cadastrar um novo curso com uma imagem opcional."
+            description = "Método para cadastrar um novo curso com uma imagem opcional.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {
+                            @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                                    schema = @Schema(type = "object", requiredProperties = {"cursoRequest"}))
+                    }
+            )
     )
     @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CursoResponse> cadastrarCurso(

@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class AulaResponse {
 
+    private String uuid;
     private String titulo;
     private String descricao;
     private Integer duracaoMinutos;

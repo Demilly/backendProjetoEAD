@@ -1,7 +1,6 @@
 package br.com.ead.model.entity.ensino.aula;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
-import br.com.ead.model.entity.ensino.modulo.Questao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,18 +9,22 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "aula")
-public class Aula {
+public class AulaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_aula")
     private Long idAula;
+
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "titulo", nullable = false)
     private String titulo;

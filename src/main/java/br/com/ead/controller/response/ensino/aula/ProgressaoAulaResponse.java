@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class ProgressaoAulaResponse {
 
-    private Long idProgressaoAula;
+    private String uuid;
     private String tituloAula;
     private String descricaoAula;
     private Boolean statusConcluido;

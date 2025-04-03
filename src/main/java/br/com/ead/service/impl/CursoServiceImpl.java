@@ -54,7 +54,7 @@ public class CursoServiceImpl implements CursoService {
             Instituicao instituicao = new Instituicao();
             instituicao.setIdInstituicao(instituicaoId);
 
-            cursos = cursoRepository.findByInstituicao(instituicao);
+            cursos = cursoRepository.findByInstituicoesContaining(instituicao);
         } else {
             cursos = cursoRepository.findAll();
         }
@@ -78,9 +78,6 @@ public class CursoServiceImpl implements CursoService {
         if (imagem != null && !imagem.isEmpty()) {
             uploadS3(imagem, cursoEntity);
         }
-
-        Instituicao instituicao = buscarInstituicao(cursoRequest.getInstituicao());
-        associarInstituicaoAoCurso(cursoEntity, instituicao);
 
         cursoEntity.setAtivo(cursoRequest.getAtivo());
 
@@ -132,10 +129,6 @@ public class CursoServiceImpl implements CursoService {
         Curso cursoExistente = cursoRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + uuid));
 
-        if(updateRequest.getIdInstituicao()!= null) {
-            Instituicao instituicao = buscarInstituicao(updateRequest.getIdInstituicao());
-            associarInstituicaoAoCurso(cursoExistente, instituicao);
-        }
         cursoExistente.setNome(updateRequest.getNome());
         cursoExistente.setDescricao(updateRequest.getDescricao());
         cursoExistente.setAtivo(updateRequest.getAtivo());
@@ -156,8 +149,4 @@ public class CursoServiceImpl implements CursoService {
                 .orElseThrow(() -> new BusinessException("Instituição não localizada para o código informado.", cpfOuCnpj));
     }
 
-    private void associarInstituicaoAoCurso(Curso curso, Instituicao instituicao) {
-        curso.setInstituicao(instituicao);
-//        instituicao.add(curso);
-    }
 }

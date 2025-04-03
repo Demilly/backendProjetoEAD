@@ -13,13 +13,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Dados do curso para cadastro")
 public class CursoRequest {
+    @Schema(description = "Nome do curso", example = "Java")
     private String nome;
+    @Schema(description = "Descrição do curso", example = "Curso básico de Java")
     private String descricao;
     private String urlBanner;
     private String cargaHoraria;
     private Boolean ativo;
-    private String instituicao;
     @Schema(description = "Categoria", example = "APRENDIZAGEM", allowableValues = "BIBLIOTECA_PROFESSOR, BIBLIOTECA_ALUNO, APRENDIZAGEM")
     private CategoriaEnum categoria;
 }

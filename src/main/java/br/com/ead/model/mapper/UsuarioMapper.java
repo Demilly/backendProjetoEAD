@@ -19,6 +19,7 @@ public interface UsuarioMapper {
     @Mapping(target = "cursos", ignore = true)
     @Mapping(target = "telefones", ignore = true)
     @Mapping(target = "instituicao", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
     Usuario toUsuario(UsuarioRequest usuarioRequest);
 
     UsuarioResponse toUsuarioResponse(Usuario usuario);

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,13 +21,16 @@ public class Comentario {
     @Column(name = "id_comentario")
     private Long idComentario;
 
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
+
     @Column(name = "texto", nullable = false)
     private String texto;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "aula_id", nullable = false)
-    private Aula aula;
+    private AulaEntity aula;
 
     @JsonIgnore
     @ManyToOne

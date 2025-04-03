@@ -19,7 +19,7 @@ public class ProgressaoAulaController {
     private final ProgressaoAulaService progressaoAulaService;
 
     @GetMapping("/aluno/{usuarioId}")
-    public ResponseEntity<List<ProgressaoAulaResponse>> listarProgressaoPorAluno(@PathVariable Long usuarioId) {
+    public ResponseEntity<List<ProgressaoAulaResponse>> listarProgressaoPorAluno(@PathVariable String usuarioId) {
         List<ProgressaoAulaResponse> progressos = progressaoAulaService.listarProgressaoPorAluno(usuarioId);
         return ResponseEntity.ok(progressos);
     }

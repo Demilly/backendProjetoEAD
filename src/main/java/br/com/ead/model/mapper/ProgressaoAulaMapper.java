@@ -8,9 +8,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProgressaoAulaMapper {
 
-    @Mapping(target = "tituloAula", source = "aula.titulo")
-    @Mapping(target = "descricaoAula", source = "aula.descricao")
-    @Mapping(target = "tituloModulo", source = "aula.modulo.tituloModulo")
-    @Mapping(target = "nomeCurso", source = "aula.modulo.curso.nome")
+    @Mapping(target = "tituloAula", ignore = true)
+    @Mapping(target = "descricaoAula", ignore = true)
+    @Mapping(target = "tituloModulo", ignore = true)
+    @Mapping(target = "nomeCurso", ignore = true)
     ProgressaoAulaResponse toProgressaoAulaResponse(ProgressaoAula progressaoAula);
 }

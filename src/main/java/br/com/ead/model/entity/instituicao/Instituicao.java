@@ -12,7 +12,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -45,14 +47,17 @@ public class Instituicao {
     @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Usuario> usuarios = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Curso> cursos = new ArrayList<>();
+    @ManyToMany(mappedBy = "instituicoes")
+    private Set<Curso> cursos = new HashSet<>();
 
     @Column(name = "quantidade_licencas_professor")
     private Integer quantidadeLicencasProfessor;
 
     @Column(name = "quantidade_licencas_aluno")
     private Integer quantidadeLicencasAluno;
+
+    @Column(name = "ativo")
+    private Boolean ativo;
 
 //    public void addCurso(Curso curso) {
 //        cursos.add(curso);

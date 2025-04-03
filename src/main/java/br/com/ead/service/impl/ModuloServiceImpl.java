@@ -126,7 +126,7 @@ public class ModuloServiceImpl implements ModuloService {
 
         if (modulo.getUrlArquivo() != null && !modulo.getUrlArquivo().isEmpty()) {
             for (String urlArquivo : modulo.getUrlArquivo()) {
-                armazenamentoS3Service.deletarArquivo(urlArquivo, "modulo/documento");
+                armazenamentoS3Service.deletarArquivo(urlArquivo, "MODULO/DOCUMENTO");
             }
         }
         moduloRepository.delete(modulo);

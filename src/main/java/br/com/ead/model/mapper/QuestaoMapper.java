@@ -6,16 +6,16 @@ import br.com.ead.model.entity.ensino.modulo.Questao;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {RespostaMapper.class})
 public interface QuestaoMapper {
 
     @Mapping(target = "idQuestao", ignore = true)
     @Mapping(target = "dataCriacao", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "modulo", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "respostas", source = "respostas")
     Questao toQuestao(QuestaoRequest questaoRequest);
 
-    @Mapping(target = "dataCriacao", ignore = true)
-    @Mapping(target = "dataAtualizacao", ignore = true)
     QuestaoResponse toQuestaoResponse(Questao questao);
 }

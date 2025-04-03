@@ -18,7 +18,6 @@ public class CursoResponse {
     private String cargaHoraria;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
-    private InstituicaoResponse instituicao;
     private List<ModuloResponse> modulos;
     private String uuid;
     private CategoriaEnum categoria;

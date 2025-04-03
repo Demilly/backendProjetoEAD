@@ -13,9 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -55,10 +53,13 @@ public class Curso {
     @UpdateTimestamp
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "instituicao_id")
-    private Instituicao instituicao;
+    @ManyToMany
+    @JoinTable(
+            name = "curso_instituicao",
+            joinColumns = @JoinColumn(name = "curso_id"),
+            inverseJoinColumns = @JoinColumn(name = "instituicao_id")
+    )
+    private Set<Instituicao> instituicoes = new HashSet<>();
 
     @Column(name = "categoria")
     @Enumerated(EnumType.STRING)
@@ -70,8 +71,7 @@ public class Curso {
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Modulo> modulos = new ArrayList<>();
 
-    public void addModulos(Modulo modulo) {
-        modulo.setCurso(this);
-        this.modulos.add(modulo);
+    public void adicionarInstituicao(Instituicao instituicao) {
+        this.instituicoes.add(instituicao);
     }
 }

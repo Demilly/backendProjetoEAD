@@ -17,6 +17,8 @@ public interface ModuloMapper {
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "aulas", ignore = true)
     @Mapping(target = "aulas[].progressaoAulas", ignore = true)
+    @Mapping(target = "questoes", ignore = true)
+    @Mapping(target = "urlArquivo", ignore = true)
     Modulo toModulo(ModuloRequest moduloRequest);
 
     @Mapping(target = "dataCriacao", source = "dataCriacao")
