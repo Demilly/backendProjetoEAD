@@ -32,7 +32,7 @@ public class CursoServiceImpl implements CursoService {
     private final InstituicaoRepository instituicaoRepository;
     private final CursoRepository cursoRepository;
     private final CursoMapper cursoMapper;
-    private  ArmazenamentoS3Service armazenamentoS3Service;
+    private ArmazenamentoS3Service armazenamentoS3Service;
     private final UsuarioRepository usuarioRepository;
 
     @Override
@@ -46,11 +46,16 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
+    public List<CursoResponse> listarTodos() {
+        var cursos = cursoRepository.findAll();
+        return cursos.stream().map(cursoMapper::toCursoResponse).toList();
+    }
+
+    @Override
     public List<CursoResponse> listarCursos(Long instituicaoId) {
         List<Curso> cursos;
 
         if (instituicaoId != null) {
-            // Criando um objeto Instituicao apenas com o ID
             Instituicao instituicao = new Instituicao();
             instituicao.setIdInstituicao(instituicaoId);
 
@@ -87,14 +92,13 @@ public class CursoServiceImpl implements CursoService {
 
     private void uploadS3(MultipartFile imagem, Curso cursoEntity) {
 
-        // Deleta a imagem do S3, se tiver uma URL válida
-        if (cursoEntity.getUrlBanner() != null && !cursoEntity.getUrlBanner().isBlank() && !cursoEntity.getUrlBanner().isEmpty()) {
+        if (cursoEntity.getUrlBanner() != null && !cursoEntity.getUrlBanner().isBlank()) {
             armazenamentoS3Service.deletarArquivo(cursoEntity.getUrlBanner(), "curso");
         }
 
         var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "curso");
 
-        if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
+        if (responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
             cursoEntity.setUrlBanner(responseS3.getCaminhoArquivo());
         }
     }

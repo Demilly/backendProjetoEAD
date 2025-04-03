@@ -29,6 +29,11 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+    @GetMapping(value = "listar-todos")
+    public List<CursoResponse> listarTodos() {
+        return cursoService.listarTodos();
+    }
+
     @GetMapping("/{cpfOuCnpj}/matriculado")
     public List<CursoResponse> listarCursosDoUsuarioMatriculado(@PathVariable String cpfOuCnpj) {
         return cursoService.listarCursosDoUsuario(cpfOuCnpj);
