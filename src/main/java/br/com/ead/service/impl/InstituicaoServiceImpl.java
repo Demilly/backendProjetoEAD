@@ -2,6 +2,7 @@ package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.controller.response.instituicao.InstituicaoResponse;
+import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.instituicao.Instituicao;
 import br.com.ead.model.mapper.InstituicaoMapper;
 import br.com.ead.repository.CursoRepository;
@@ -35,13 +36,25 @@ public class InstituicaoServiceImpl implements InstituicaoService {
     @Override
     public InstituicaoResponse salvarInstituicao(InstituicaoRequest instituicaoRequest) {
         var instituicao = instituicaoMapper.toInstituicao(instituicaoRequest);
-        var curso = cursoRepository.findByUuid(instituicaoRequest.getUuidCurso())
-                .orElseThrow(() -> new BusinessException("Curso não encontrado"));
 
-        instituicao.getCursos().add(curso);
+        List<Curso> cursos = cursoRepository.findAllByUuidIn(instituicaoRequest.getUuidCurso());
+
+        if (cursos.isEmpty()) {
+            throw new BusinessException("Nenhum curso encontrado para os UUIDs fornecidos");
+        }
+
+        cursos.forEach(curso -> {
+            curso.getInstituicoes().add(instituicao);
+        });
+
+        instituicao.getCursos().clear();
+        instituicao.getCursos().addAll(cursos);
+
         var instituicaoSalva = instituicaoRepository.save(instituicao);
+
         return instituicaoMapper.toInstituicaoResponse(instituicaoSalva);
     }
+
 
     @Override
     public InstituicaoResponse atualizarInstituicao(String cpfOuCnpj, InstituicaoRequest instituicaoRequest) {
@@ -51,10 +64,15 @@ public class InstituicaoServiceImpl implements InstituicaoService {
         instituicaoMapper.updateInstituicaoFromRequest(instituicaoRequest, instituicaoExistente);
 
         if (instituicaoRequest.getUuidCurso() != null) {
-            var curso = cursoRepository.findByUuid(instituicaoRequest.getUuidCurso())
-                    .orElseThrow(() -> new BusinessException("Curso não encontrado"));
+            instituicaoRequest.getUuidCurso().clear();
+            List<Curso> cursos = cursoRepository.findAllByUuidIn(instituicaoRequest.getUuidCurso());
 
-            instituicaoExistente.getCursos().add(curso);
+            if (cursos.isEmpty()) {
+                throw new BusinessException("Nenhum curso encontrado para os UUIDs fornecidos");
+            }
+
+            instituicaoExistente.getCursos().clear(); // Remove os cursos antigos
+            instituicaoExistente.getCursos().addAll(cursos);
         }
 
         var instituicaoAtualizada = instituicaoRepository.save(instituicaoExistente);

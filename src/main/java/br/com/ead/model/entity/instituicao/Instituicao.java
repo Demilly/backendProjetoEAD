@@ -47,8 +47,13 @@ public class Instituicao {
     @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Usuario> usuarios = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "instituicoes")
-    private Set<Curso> cursos = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "curso_instituicao",
+            joinColumns = @JoinColumn(name = "instituicao_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
+    private List<Curso> cursos = new ArrayList<>();
 
     @Column(name = "quantidade_licencas_professor")
     private Integer quantidadeLicencasProfessor;

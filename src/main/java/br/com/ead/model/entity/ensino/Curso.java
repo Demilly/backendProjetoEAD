@@ -53,12 +53,7 @@ public class Curso {
     @UpdateTimestamp
     private LocalDateTime dataAtualizacao;
 
-    @ManyToMany
-    @JoinTable(
-            name = "curso_instituicao",
-            joinColumns = @JoinColumn(name = "curso_id"),
-            inverseJoinColumns = @JoinColumn(name = "instituicao_id")
-    )
+    @ManyToMany(mappedBy = "cursos", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Set<Instituicao> instituicoes = new HashSet<>();
 
     @Column(name = "categoria")
