@@ -90,9 +90,14 @@ public class ModuloServiceImpl implements ModuloService {
         Modulo moduloExistente = moduloRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Modulo não encontrado com ID: " + uuid));
 
+        var curso = cursoRepository.findByUuid(updateModuloRequest.getUuidCurso())
+                .orElseThrow(() -> new BusinessException("Curso não localizado para o código informado.", moduloExistente.getCurso().getUuid()));
+
         moduloExistente.setTituloModulo(updateModuloRequest.getTituloModulo());
         moduloExistente.setDescricao(updateModuloRequest.getDescricao());
         moduloExistente.setOrdemModulo(updateModuloRequest.getOrdemModulo());
+
+        moduloExistente.setCurso(curso);
 
         if (arquivos != null && !arquivos.isEmpty()) {
             moduloExistente.setUrlArquivo(new ArrayList<>());

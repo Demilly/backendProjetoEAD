@@ -3,6 +3,7 @@ package br.com.ead.controller.response.ensino.modulo;
 import br.com.ead.controller.response.LeituraComplementarResponse;
 import br.com.ead.controller.response.ensino.aula.AulaResponse;
 import br.com.ead.controller.response.ensino.modulo.questao.QuestaoResponse;
+import br.com.ead.model.entity.ensino.Curso;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,4 +22,5 @@ public class ModuloResponse {
     private String uuid;
     private List<LeituraComplementarResponse> leiturasComplementares;
     private List<QuestaoResponse> questoes;
+    private String uuidCurso;
 }

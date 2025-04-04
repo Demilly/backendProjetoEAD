@@ -25,5 +25,6 @@ public interface ModuloMapper {
     @Mapping(target = "dataAtualizacao", source = "dataAtualizacao")
     @Mapping(target = "aulas", ignore = true)
     @Mapping(target = "aulas[].progressaoAulas", ignore = true)
+    @Mapping(target = "uuidCurso", source = "curso.uuid")
     ModuloResponse toModuloResponse(Modulo modulo);
 }
