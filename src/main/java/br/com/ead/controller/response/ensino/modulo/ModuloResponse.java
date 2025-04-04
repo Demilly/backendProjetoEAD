@@ -18,9 +18,9 @@ public class ModuloResponse {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private List<AulaResponse> aulas;
-    private Curso curso;
     private List<String> urlArquivo;
     private String uuid;
     private List<LeituraComplementarResponse> leiturasComplementares;
     private List<QuestaoResponse> questoes;
+    private String uuidCurso;
 }
