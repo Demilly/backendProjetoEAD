@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,11 @@ public class CursoController {
 
     private final CursoService cursoService;
 
+    @GetMapping(value = "listar-todos")
+    public List<CursoResponse> listarTodos() {
+        return cursoService.listarTodos();
+    }
+
     @GetMapping("/{cpfOuCnpj}/matriculado")
     public List<CursoResponse> listarCursosDoUsuarioMatriculado(@PathVariable String cpfOuCnpj) {
         return cursoService.listarCursosDoUsuario(cpfOuCnpj);
@@ -42,7 +48,7 @@ public class CursoController {
         return ResponseEntity.ok(cursosPaginados);
     }
 
-    @GetMapping
+    @GetMapping("/listar-por-instituicao")
     @ApiResponse(responseCode = "200", description = "Lista de cursos retornada com sucesso")
     public ResponseEntity<List<CursoResponse>> listarCursos(@RequestParam(required = false) Long idInstituicao) {
         var cursosPaginados = cursoService.listarCursos(idInstituicao);
@@ -59,7 +65,13 @@ public class CursoController {
 
     @Operation(
             summary = "Cadastrar Curso",
-            description = "Método para cadastrar um novo curso com uma imagem opcional."
+            description = "Método para cadastrar um novo curso com uma imagem opcional.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {
+                            @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                                    schema = @Schema(type = "object", requiredProperties = {"cursoRequest"}))
+                    }
+            )
     )
     @PostMapping(value = "/salvar", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CursoResponse> cadastrarCurso(

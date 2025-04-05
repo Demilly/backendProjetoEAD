@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class ComentarioResponse {
 
+    private String uuid;
     private String texto;
 }

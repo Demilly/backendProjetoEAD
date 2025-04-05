@@ -13,5 +13,7 @@ public interface NotaMapper {
     @Mapping(target = "modulo", ignore = true)
     Nota toNota(NotaRequest notaRequest);
 
+    @Mapping(target = "modulo.aulas", ignore = true)
+    @Mapping(target = "modulo", source = "nota.modulo")
     NotaResponse toNotaResponse(Nota nota);
 }

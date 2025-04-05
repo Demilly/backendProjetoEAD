@@ -1,6 +1,10 @@
 package br.com.ead.controller.request.ensino.modulo;
 
+import br.com.ead.model.entity.ensino.modulo.LeituraComplementar;
+import br.com.ead.model.entity.ensino.modulo.Questao;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ModuloRequest {
@@ -9,5 +13,5 @@ public class ModuloRequest {
     private String descricao;
     private Integer ordemModulo;
     private String uuidCurso;
-    private String urlArquivo;
+    private List<LeituraComplementar> leiturasComplementares;
 }

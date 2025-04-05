@@ -18,7 +18,7 @@ public class ProgressaoAulaServiceImpl implements ProgressaoAulaService {
     private final ProgressaoAulaMapper progressaoAulaMapper;
 
     @Override
-    public List<ProgressaoAulaResponse> listarProgressaoPorAluno(Long usuarioId) {
+    public List<ProgressaoAulaResponse> listarProgressaoPorAluno(String usuarioId) {
         List<ProgressaoAula> progressaoAulas = progressaoAulaRepository.findProgressaoAulasByUsuarioId(usuarioId);
         return progressaoAulas.stream()
                 .map(progressaoAulaMapper::toProgressaoAulaResponse)

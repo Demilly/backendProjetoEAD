@@ -14,15 +14,17 @@ public interface ModuloMapper {
     @Mapping(target = "dataAtualizacao", ignore = true)
     @Mapping(target = "curso", ignore = true)
     @Mapping(target = "notas", ignore = true)
-    @Mapping(target = "urlArquivo", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Mapping(target = "aulas", ignore = true)
     @Mapping(target = "aulas[].progressaoAulas", ignore = true)
+    @Mapping(target = "questoes", ignore = true)
+    @Mapping(target = "urlArquivo", ignore = true)
     Modulo toModulo(ModuloRequest moduloRequest);
 
     @Mapping(target = "dataCriacao", source = "dataCriacao")
     @Mapping(target = "dataAtualizacao", source = "dataAtualizacao")
     @Mapping(target = "aulas", ignore = true)
     @Mapping(target = "aulas[].progressaoAulas", ignore = true)
+    @Mapping(target = "uuidCurso", source = "curso.uuid")
     ModuloResponse toModuloResponse(Modulo modulo);
 }

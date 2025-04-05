@@ -1,12 +1,22 @@
 package br.com.ead.controller.request;
 
+import br.com.ead.model.enums.TipoPerguntaEnum;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 public class QuestaoRequest {
 
-    private String tituloQuestao;
+    private String pergunta;
+    private TipoPerguntaEnum tipoPergunta;
     private String descricao;
-    private String respostaCorreta;
     private Integer pontuacao;
+    private String explicacao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataAtualizacao;
+    private String uuidModulo;
+    private String uuidCurso;
+    private Set<RespostaRequest> respostas;
 }

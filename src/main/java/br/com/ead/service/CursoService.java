@@ -23,4 +23,6 @@ public interface CursoService {
     CursoResponse atualizarCurso(String uuid, UpdateRequest updateRequest, MultipartFile imagem);
 
     List<CursoResponse> listarCursosDoUsuario(String cpfOuCnpj);
+
+    List<CursoResponse> listarTodos();
 }

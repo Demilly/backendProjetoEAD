@@ -32,7 +32,7 @@ public class CursoServiceImpl implements CursoService {
     private final InstituicaoRepository instituicaoRepository;
     private final CursoRepository cursoRepository;
     private final CursoMapper cursoMapper;
-    private  ArmazenamentoS3Service armazenamentoS3Service;
+    private ArmazenamentoS3Service armazenamentoS3Service;
     private final UsuarioRepository usuarioRepository;
 
     @Override
@@ -46,15 +46,20 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
+    public List<CursoResponse> listarTodos() {
+        var cursos = cursoRepository.findAll();
+        return cursos.stream().map(cursoMapper::toCursoResponse).toList();
+    }
+
+    @Override
     public List<CursoResponse> listarCursos(Long instituicaoId) {
         List<Curso> cursos;
 
         if (instituicaoId != null) {
-            // Criando um objeto Instituicao apenas com o ID
             Instituicao instituicao = new Instituicao();
             instituicao.setIdInstituicao(instituicaoId);
 
-            cursos = cursoRepository.findByInstituicao(instituicao);
+            cursos = cursoRepository.findByInstituicoesContaining(instituicao);
         } else {
             cursos = cursoRepository.findAll();
         }
@@ -79,9 +84,6 @@ public class CursoServiceImpl implements CursoService {
             uploadS3(imagem, cursoEntity);
         }
 
-        Instituicao instituicao = buscarInstituicao(cursoRequest.getInstituicao());
-        associarInstituicaoAoCurso(cursoEntity, instituicao);
-
         cursoEntity.setAtivo(cursoRequest.getAtivo());
 
         var cursoSalvo = cursoRepository.save(cursoEntity);
@@ -90,14 +92,13 @@ public class CursoServiceImpl implements CursoService {
 
     private void uploadS3(MultipartFile imagem, Curso cursoEntity) {
 
-        // Deleta a imagem do S3, se tiver uma URL válida
-        if (cursoEntity.getUrlBanner() != null && !cursoEntity.getUrlBanner().isBlank() && !cursoEntity.getUrlBanner().isEmpty()) {
+        if (cursoEntity.getUrlBanner() != null && !cursoEntity.getUrlBanner().isBlank()) {
             armazenamentoS3Service.deletarArquivo(cursoEntity.getUrlBanner(), "curso");
         }
 
         var responseS3 = armazenamentoS3Service.uploadImagem(imagem, "curso");
 
-        if(responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
+        if (responseS3 != null && !responseS3.getCaminhoArquivo().isEmpty()) {
             cursoEntity.setUrlBanner(responseS3.getCaminhoArquivo());
         }
     }
@@ -132,10 +133,6 @@ public class CursoServiceImpl implements CursoService {
         Curso cursoExistente = cursoRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Curso não encontrado com ID: " + uuid));
 
-        if(updateRequest.getIdInstituicao()!= null) {
-            Instituicao instituicao = buscarInstituicao(updateRequest.getIdInstituicao());
-            associarInstituicaoAoCurso(cursoExistente, instituicao);
-        }
         cursoExistente.setNome(updateRequest.getNome());
         cursoExistente.setDescricao(updateRequest.getDescricao());
         cursoExistente.setAtivo(updateRequest.getAtivo());
@@ -156,8 +153,4 @@ public class CursoServiceImpl implements CursoService {
                 .orElseThrow(() -> new BusinessException("Instituição não localizada para o código informado.", cpfOuCnpj));
     }
 
-    private void associarInstituicaoAoCurso(Curso curso, Instituicao instituicao) {
-        curso.setInstituicao(instituicao);
-        instituicao.addCurso(curso);
-    }
 }

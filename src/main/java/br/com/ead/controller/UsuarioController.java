@@ -1,12 +1,8 @@
 package br.com.ead.controller;
 
 
-import br.com.ead.controller.request.ensino.curso.CursoRequest;
-import br.com.ead.controller.request.instituicao.InstituicaoRequest;
 import br.com.ead.controller.request.usuario.UsuarioRequest;
 import br.com.ead.controller.request.usuario.UsuarioUpdateRequest;
-import br.com.ead.controller.response.ensino.curso.CursoResponse;
-import br.com.ead.controller.response.instituicao.InstituicaoResponse;
 import br.com.ead.controller.response.usuario.UsuarioResponse;
 import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.service.UsuarioService;
@@ -21,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -57,13 +51,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuariosResponse);
     }
 
-    @GetMapping(value = "/tipos")
+    @GetMapping(value = "/tipos/adms")
     @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     public ResponseEntity<Page<UsuarioResponse>> buscarPorTiposUsuarioPaginado(
-            @RequestParam List<TipoUsuarioEnum> tiposUsuarios,
             Pageable pageable) {
-        Page<UsuarioResponse> usuariosResponse = usuarioService.buscarPorTiposUsuarioPaginado(tiposUsuarios, pageable);
+        Page<UsuarioResponse> usuariosResponse = usuarioService.buscarPorTiposUsuariosAdmPaginado(pageable);
         return ResponseEntity.ok(usuariosResponse);
     }
 

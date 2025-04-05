@@ -11,8 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Data
@@ -27,6 +26,9 @@ public class Instituicao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_instituicao")
     private Long idInstituicao;
+
+    @Column(name = "uuid", unique = true, nullable = false, updatable = false)
+    private String uuid = UUID.randomUUID().toString();
 
     @Column(name = "nome_instituicao")
     private String nomeInstituicao;
@@ -45,7 +47,12 @@ public class Instituicao {
     @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Usuario> usuarios = new ArrayList<>();
 
-    @OneToMany(mappedBy = "instituicao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "curso_instituicao",
+            joinColumns = @JoinColumn(name = "instituicao_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
     private List<Curso> cursos = new ArrayList<>();
 
     @Column(name = "quantidade_licencas_professor")
@@ -54,8 +61,7 @@ public class Instituicao {
     @Column(name = "quantidade_licencas_aluno")
     private Integer quantidadeLicencasAluno;
 
-    public void addCurso(Curso curso) {
-        cursos.add(curso);
-        curso.setInstituicao(this);
-    }
+    @Column(name = "ativa")
+    private Boolean ativa;
+
 }

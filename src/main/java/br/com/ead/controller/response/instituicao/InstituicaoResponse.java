@@ -13,4 +13,5 @@ public class InstituicaoResponse {
     private LocalDateTime dataAtualizacao;
     private Integer quantidadeLicencasProfessor;
     private Integer quantidadeLicencasAluno;
+    private Boolean ativa;
 }

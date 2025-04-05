@@ -16,6 +16,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -41,7 +43,8 @@ public class CloudStorageProviderServiceImpl implements CloudStorageProviderServ
 
             String fileUrl = gerarUrlArquivo(caminhoArquivo);
 
-            return new UploadResponse(fileUrl, "Arquivo carregado com sucesso.");
+            var dataHoraAtual = LocalDateTime.now();
+            return new UploadResponse(fileUrl, "Arquivo carregado com sucesso.", dataHoraAtual);
 
         } catch (IOException e) {
             throw new FileUploadException("Falha ao fazer o upload do arquivo", e);
@@ -59,7 +62,8 @@ public class CloudStorageProviderServiceImpl implements CloudStorageProviderServ
 
         String fileUrl = gerarUrlArquivo(caminhoArquivo);
 
-        return new UploadResponse(fileUrl, "Arquivo carregado com sucesso.");
+        var dataHoraAtual = LocalDateTime.now();
+        return new UploadResponse(fileUrl, "Arquivo carregado com sucesso.", dataHoraAtual);
 
     }
 

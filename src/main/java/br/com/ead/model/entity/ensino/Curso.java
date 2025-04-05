@@ -2,20 +2,18 @@ package br.com.ead.model.entity.ensino;
 
 import br.com.ead.model.entity.ensino.modulo.Modulo;
 import br.com.ead.model.entity.instituicao.Instituicao;
-import br.com.ead.model.entity.s3.ArquivoReferencia;
 import br.com.ead.model.enums.CategoriaEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -55,24 +53,20 @@ public class Curso {
     @UpdateTimestamp
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "instituicao_id")
-    private Instituicao instituicao;
+    @ManyToMany(mappedBy = "cursos", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private Set<Instituicao> instituicoes = new HashSet<>();
 
     @Column(name = "categoria")
     @Enumerated(EnumType.STRING)
     private CategoriaEnum categoria;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Matricula> matriculas = new ArrayList<>();
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Modulo> modulos = new ArrayList<>();
 
-    public void addModulos(Modulo modulo) {
-        modulo.setCurso(this);
-        this.modulos.add(modulo);
+    public void adicionarInstituicao(Instituicao instituicao) {
+        this.instituicoes.add(instituicao);
     }
 }
