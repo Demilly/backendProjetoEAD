@@ -1,6 +1,6 @@
 package br.com.ead.service.seguranca;
 
-
+import br.com.ead.model.enums.TipoUsuarioEnum;
 import br.com.ead.model.mapper.UsuarioMapper;
 import br.com.ead.repository.UsuarioRepository;
 import br.com.ead.service.seguranca.config.model.AuthenticationResponse;
@@ -20,7 +20,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private final AuthenticationManager authenticationManager;
     private final UsuarioRepository usuarioRepository;
@@ -37,19 +37,19 @@ public class AuthenticationService {
         );
 
         if (authentication.isAuthenticated()) {
-
-            String token = generateToken(email);
+            String token = generateToken(email, usuario.getTipoUsuario());
             return new AuthenticationResponse(usuarioResponse, token);
         } else {
             throw new Exception("Credenciais inválidas");
         }
     }
 
-    public String generateToken(String email) {
+    public String generateToken(String email, TipoUsuarioEnum tipoUsuario) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", tipoUsuario.name())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // Token expira em 1 hora
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1h
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

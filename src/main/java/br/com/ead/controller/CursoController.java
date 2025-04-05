@@ -29,7 +29,7 @@ public class CursoController {
 
     private final CursoService cursoService;
 
-    @GetMapping(value = "listar-todos")
+    @GetMapping(value = "/listar-todos")
     public List<CursoResponse> listarTodos() {
         return cursoService.listarTodos();
     }
