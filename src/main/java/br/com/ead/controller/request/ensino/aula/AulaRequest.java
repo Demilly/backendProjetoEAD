@@ -13,5 +13,4 @@ public class AulaRequest {
     private Integer duracaoMinutos;
     private Integer ordemAula;
     private String uuidModulo;
-    private List<VideoAulaRequest> videos;
 }
