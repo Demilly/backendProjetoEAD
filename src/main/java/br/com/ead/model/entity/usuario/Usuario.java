@@ -84,6 +84,9 @@ public class Usuario {
     @Column(name = "status")
     private Boolean statusUsuario;
 
+    private LocalDateTime primeiroAcesso;
+    private LocalDateTime ultimoAcesso;
+
     public void addTelefone(Telefone telefone) {
         telefone.setUsuario(this);
         this.telefones.add(telefone);

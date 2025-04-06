@@ -21,4 +21,6 @@ public class UsuarioResponse {
     private Boolean statusUsuario;
     private String cpfOuCnpj;
     private String urlImagem;
+    private LocalDateTime primeiroAcesso;
+    private LocalDateTime ultimoAcesso;
 }

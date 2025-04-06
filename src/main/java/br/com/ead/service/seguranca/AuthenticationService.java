@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -29,6 +30,14 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(String email, String password) throws Exception {
         var usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (usuario.getPrimeiroAcesso() == null) {
+            usuario.setPrimeiroAcesso(agora);
+        }
+        usuario.setUltimoAcesso(agora);
+
 
         var usuarioResponse = usuarioMapper.toUsuarioResponse(usuario);
 

@@ -23,7 +23,6 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioLoginRequest loginRequest) {
         try {
