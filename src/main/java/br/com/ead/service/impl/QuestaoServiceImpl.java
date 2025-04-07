@@ -1,6 +1,7 @@
 package br.com.ead.service.impl;
 
 import br.com.ead.controller.request.QuestaoRequest;
+import br.com.ead.controller.request.RespostaRequest;
 import br.com.ead.controller.response.ensino.modulo.questao.QuestaoResponse;
 import br.com.ead.model.entity.ensino.modulo.Questao;
 import br.com.ead.model.entity.ensino.modulo.Resposta;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,12 +78,22 @@ public class QuestaoServiceImpl implements QuestaoService {
                     questao.setExplicacao(questaoRequest.getExplicacao());
                     questao.setPontuacao(questaoRequest.getPontuacao());
 
-                    questaoRequest.getRespostas().clear();
-                    if (questaoRequest.getRespostas() != null) {
-                        for (Resposta resposta : questao.getRespostas()) {
-                            resposta.setQuestao(questao);
-                        }
+                    // Trabalhar com o Set retornado da entidade, sem substituir
+                    Set<Resposta> respostas = questao.getRespostas();
+                    respostas.clear();
+
+                    // Adicionar novas respostas
+                    for (RespostaRequest respostaRequest : questaoRequest.getRespostas()) {
+                        Resposta resposta = new Resposta();
+                        resposta.setCorreta(respostaRequest.isCorreta());
+                        resposta.setDescricao(respostaRequest.getDescricao());
+                        resposta.setOpcao(respostaRequest.getOpcao());
+                        resposta.setQuestao(questao);
+                        respostas.add(resposta);
                     }
+
+                    var modulo = moduloRepository.findByUuid(questaoRequest.getUuidModulo()).orElseThrow();
+                    questao.setModulo(modulo);
 
                     Questao questaoSalva = questaoRepository.save(questao);
                     return questaoMapper.toQuestaoResponse(questaoSalva);

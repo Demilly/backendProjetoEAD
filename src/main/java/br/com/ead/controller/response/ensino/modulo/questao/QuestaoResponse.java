@@ -20,5 +20,7 @@ public class QuestaoResponse {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private Set<RespostaResponse> respostas;
-    private Modulo modulo;
+    private String uuidCurso;
+    private String uuidModulo;
+
 }

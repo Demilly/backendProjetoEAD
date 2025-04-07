@@ -17,5 +17,7 @@ public interface QuestaoMapper {
     @Mapping(target = "respostas", source = "respostas")
     Questao toQuestao(QuestaoRequest questaoRequest);
 
+    @Mapping(target = "uuidModulo", source = "modulo.uuid")
+    @Mapping(target = "uuidCurso", source = "modulo.curso.uuid")
     QuestaoResponse toQuestaoResponse(Questao questao);
 }
