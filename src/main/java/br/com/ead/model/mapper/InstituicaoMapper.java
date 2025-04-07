@@ -18,6 +18,7 @@ public interface InstituicaoMapper {
     @Mapping(target = "uuid", ignore = true)
     Instituicao toInstituicao(InstituicaoRequest instituicaoRequest);
 
+    @Mapping(target = "uuidCurso", expression = "java(instituicao.getCursos().stream().map(c -> c.getUuid()).toList())")
     InstituicaoResponse toInstituicaoResponse(Instituicao instituicao);
 
     @Mapping(target = "idInstituicao", ignore = true)

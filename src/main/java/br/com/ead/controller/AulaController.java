@@ -4,10 +4,13 @@ import br.com.ead.controller.request.ensino.aula.AulaRequest;
 import br.com.ead.controller.response.ensino.aula.AulaResponse;
 import br.com.ead.service.AulaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +33,24 @@ public class AulaController {
         return aulaService.criarAula(aulaRequest, arquivos);
     }
 
+    @GetMapping("/paginada")
+    @ApiResponse(responseCode = "200", description = "Lista de aulas retornada com sucesso")
+    public ResponseEntity<Page<AulaResponse>> listarAulasPaginada(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var aulasPaginadas = aulaService.listarAulasPaginada(page, size);
+        return ResponseEntity.ok(aulasPaginadas);
+    }
+
+    @GetMapping("/listar-por-modulo/{uuidModulo}")
+    @ApiResponse(responseCode = "200", description = "Lista de Questoes retornada com sucesso")
+    public ResponseEntity<Page<AulaResponse>> listarAulasPaginadaPorModulo(
+            @PathVariable String uuidModulo,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        var aulasPaginadas = aulaService.listarAulasPaginadaPorModulo(uuidModulo, page, size);
+        return ResponseEntity.ok(aulasPaginadas);
+    }
 
     @GetMapping("/{uuid}")
     public AulaResponse getAula(@PathVariable String uuid) {

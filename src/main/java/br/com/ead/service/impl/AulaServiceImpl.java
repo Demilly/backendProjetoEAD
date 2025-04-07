@@ -13,7 +13,9 @@ import br.com.ead.service.ArmazenamentoS3Service;
 import br.com.ead.service.AulaService;
 import br.com.ead.service.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.ap.shaded.freemarker.core.BugException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +47,20 @@ public class AulaServiceImpl implements AulaService {
         }
 
         return aulaMapper.toAulaResponse(aulaEntity);
+    }
+
+    @Override
+    public Page<AulaResponse> listarAulasPaginada(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AulaEntity> aulasPaginadas = aulaRepository.findAll(pageable);
+        return aulasPaginadas.map(aulaMapper::toAulaResponse);
+    }
+
+    @Override
+    public Page<AulaResponse> listarAulasPaginadaPorModulo(String uuidModulo, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AulaEntity> aulasPaginadas = aulaRepository.findAllByModuloUuid(uuidModulo, pageable);
+        return aulasPaginadas.map(aulaMapper::toAulaResponse);
     }
 
     @Override
