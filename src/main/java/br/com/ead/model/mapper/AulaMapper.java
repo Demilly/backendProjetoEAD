@@ -18,5 +18,7 @@ public interface AulaMapper {
     AulaEntity toAula(AulaRequest aulaRequest);
 
 
+    @Mapping(source = "modulo.uuid", target = "uuidModulo")
+    @Mapping(source = "modulo.curso.uuid", target = "uuidCurso")
     AulaResponse toAulaResponse(AulaEntity aulaEntity);
 }

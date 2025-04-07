@@ -63,8 +63,7 @@ public class InstituicaoServiceImpl implements InstituicaoService {
 
         instituicaoMapper.updateInstituicaoFromRequest(instituicaoRequest, instituicaoExistente);
 
-        if (instituicaoRequest.getUuidCurso() != null) {
-            instituicaoRequest.getUuidCurso().clear();
+        if (instituicaoRequest.getUuidCurso() != null && !instituicaoRequest.getUuidCurso().isEmpty()) {
             List<Curso> cursos = cursoRepository.findAllByUuidIn(instituicaoRequest.getUuidCurso());
 
             if (cursos.isEmpty()) {

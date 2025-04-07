@@ -15,4 +15,6 @@ public class AulaResponse {
     private List<VideoAulaResponse> videos;
     private List<ComentarioResponse> comentarios;
     private List<ProgressaoAulaResponse> progressaoAulas;
+    private String uuidModulo;
+    private String uuidCurso;
 }
