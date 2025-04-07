@@ -9,7 +9,6 @@ public class VideoAulaResponse {
 
     private String uuid;
     private String url;
-    private Long tamanhoMb;
     private Long duracao;
     private LocalDateTime dataUpload;
 }

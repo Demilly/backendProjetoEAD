@@ -2,14 +2,14 @@ package br.com.ead.model.entity.ensino.aula;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,9 +27,6 @@ public class VideoAula {
     @Column(name = "url")
     private String url;
 
-    @Column(name = "tamanho_mb")
-    private Long tamanhoMb;
-
     @Column(name = "duracao")
     private Long duracao;
 
@@ -40,4 +37,15 @@ public class VideoAula {
     @ManyToOne
     @JoinColumn(name = "aula_id")
     private AulaEntity aula;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("idVideoAula", idVideoAula)
+                .append("uuid", uuid)
+                .append("url", url)
+                .append("duracao", duracao)
+                .append("dataUpload", dataUpload)
+                .toString();
+    }
 }

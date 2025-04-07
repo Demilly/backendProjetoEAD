@@ -29,7 +29,7 @@ public class AulaServiceImpl implements AulaService {
     private final ModuloRepository moduloRepository;
     private final AulaMapper aulaMapper;
     private final VideoAulaRepository videoAulaRepository;
-    private ArmazenamentoS3Service armazenamentoS3Service;
+    private final ArmazenamentoS3Service armazenamentoS3Service;
 
     @Override
     public AulaResponse criarAula(AulaRequest aulaRequest, List<MultipartFile> arquivos) {
@@ -90,7 +90,6 @@ public class AulaServiceImpl implements AulaService {
     private static VideoAula getVideoAula(AulaEntity aulaEntity, MultipartFile arquivo, UploadResponse responseS3) {
         VideoAula videoAula = new VideoAula();
         videoAula.setUrl(responseS3.getCaminhoArquivo());
-        videoAula.setTamanhoMb(arquivo.getSize() / 1024 / 1024);
         videoAula.setDuracao(arquivo.getSize());
         videoAula.setDataUpload(responseS3.getDataHoraUpload());
         videoAula.setAula(aulaEntity);
