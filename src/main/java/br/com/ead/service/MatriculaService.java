@@ -6,4 +6,6 @@ import br.com.ead.model.entity.ensino.Matricula;
 public interface MatriculaService {
 
     Matricula efetuarMatricula(MatriculaRequest request);
+
+    void cancelarMatricula(String uuidUsuario, String uuidCurso);
 }

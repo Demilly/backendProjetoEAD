@@ -31,6 +31,12 @@ public class Matricula {
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
+    @Column(name = "usuario_uuid", nullable = false)
+    private String usuarioUuid;
+
+    @Column(name = "curso_uuid", nullable = false)
+    private String cursoUuid;
+
     @Column(name = "data_matricula", nullable = false)
     private LocalDateTime dataMatricula;
 }

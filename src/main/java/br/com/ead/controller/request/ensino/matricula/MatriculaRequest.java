@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MatriculaRequest {
-    private Long usuarioId;
-    private Long cursoId;
+    private String uuidUsuario;
+    private String uuidCurso;
 }
