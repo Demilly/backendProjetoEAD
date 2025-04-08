@@ -20,7 +20,7 @@ public interface AulaService {
 
     List<AulaResponse> listarAulas();
 
-    void atualizarAula(Long id, AulaRequest aulaRequest);
+    AulaResponse atualizarAula(String uuid, AulaRequest aulaRequest, List<MultipartFile> arquivos);
 
-    void excluirAula(Long id);
+    void excluirAula(String uuid);
 }

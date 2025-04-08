@@ -3,6 +3,7 @@ package br.com.ead.service.impl;
 import br.com.ead.controller.request.ensino.aula.AulaRequest;
 import br.com.ead.controller.response.UploadResponse;
 import br.com.ead.controller.response.ensino.aula.AulaResponse;
+import br.com.ead.model.entity.ensino.Curso;
 import br.com.ead.model.entity.ensino.aula.AulaEntity;
 import br.com.ead.model.entity.ensino.aula.VideoAula;
 import br.com.ead.model.mapper.AulaMapper;
@@ -76,13 +77,52 @@ public class AulaServiceImpl implements AulaService {
     }
 
     @Override
-    public void atualizarAula(Long id, AulaRequest aulaRequest) {
+    public AulaResponse atualizarAula(String uuid, AulaRequest aulaRequest, List<MultipartFile> arquivos) {
 
+        return aulaRepository.findByUuid(uuid)
+                .map(aulaExistente -> {
+                    aulaExistente.setTitulo(aulaRequest.getTitulo());
+                    aulaExistente.setDescricao(aulaRequest.getDescricao());
+                    aulaExistente.setDuracaoMinutos(aulaRequest.getDuracaoMinutos());
+                    aulaExistente.setOrdemAula(aulaRequest.getOrdemAula());
+
+                    // Atualizar módulo se mudou
+                    if (!aulaExistente.getModulo().getUuid().equals(aulaRequest.getUuidModulo())) {
+                        var novoModulo = moduloRepository.findByUuid(aulaRequest.getUuidModulo())
+                                .orElseThrow(() -> new BusinessException("Módulo não encontrado"));
+                        aulaExistente.setModulo(novoModulo);
+                    }
+                    // Fazer upload dos novos arquivos, se houver
+                    if (!CollectionUtils.isEmpty(arquivos)) {
+                        uploadS3(arquivos, aulaExistente);
+                    }
+
+                    // Salvar alterações
+                    var aulaAtualizada = aulaRepository.save(aulaExistente);
+
+                    return aulaMapper.toAulaResponse(aulaAtualizada);
+                })
+                .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
     }
 
-    @Override
-    public void excluirAula(Long id) {
 
+    @Override
+    public void excluirAula(String uuid) {
+        AulaEntity aula = aulaRepository.findByUuid(uuid)
+                .orElseThrow(() -> new BusinessException("Aula não localizada para o uuid informado.", uuid));
+
+        // Excluir vídeos associados do Amazon S3
+        if (aula.getVideos() != null && !aula.getVideos().isEmpty()) {
+            for (VideoAula video : aula.getVideos()) {
+                String videoUrl = video.getUrl();
+                if (videoUrl != null && !videoUrl.isEmpty()) {
+                    armazenamentoS3Service.deletarArquivo(videoUrl, "AULA/VIDEOS");
+                }
+            }
+        }
+        videoAulaRepository.deleteAll(aula.getVideos());
+
+        aulaRepository.delete(aula);
     }
 
     private void uploadS3(List<MultipartFile> arquivos, AulaEntity aulaEntity) {

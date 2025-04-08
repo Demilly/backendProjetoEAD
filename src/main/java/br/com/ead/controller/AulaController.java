@@ -62,14 +62,22 @@ public class AulaController {
         return aulaService.listarAulas();
     }
 
-    @PutMapping("/{id}")
-    public void atualizarAula(@PathVariable Long id, @RequestBody AulaRequest aulaRequest) {
-        aulaService.atualizarAula(id, aulaRequest);
+    @PutMapping("/atualizar/{uuid}")
+    @ApiResponse(responseCode = "200", description = "Aula atualizada com sucesso")
+    @ApiResponse(responseCode = "404", description = "Aula não encontrada")
+    public  ResponseEntity<AulaResponse> atualizarAula(
+            @PathVariable String uuid,
+            @RequestPart(value = "updateRequest") @Valid AulaRequest aulaRequest,
+            @RequestPart(value = "arquivos", required = false) List<MultipartFile> arquivos) {
+        AulaResponse aulaAtualizada = aulaService.atualizarAula(uuid, aulaRequest, arquivos);
+        return ResponseEntity.ok(aulaAtualizada);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluirAula(@PathVariable Long id) {
-        aulaService.excluirAula(id);
+    @DeleteMapping("/{uuid}")
+    @ApiResponse(responseCode = "204", description = "Aula deletada com sucesso")
+    @ApiResponse(responseCode = "404", description = "Aula não encontrada")
+    public ResponseEntity<Void> excluirAula(@PathVariable String uuid) {
+        aulaService.excluirAula(uuid);
+        return ResponseEntity.noContent().build();
     }
 }
